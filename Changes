@@ -1,0 +1,40 @@
+Revision history for Perl module Text::Levenshtein::Damerau::XS
+
+1.1 Sun Nov 18 18:47:43 2012
+	- Moved XS.pm to lib/Text/Levenshtein/Damerau/XS.pm
+
+1.0 Sun Nov 18 18:15:17 2012
+	- Moved pod tests to /xt
+	- Doc updates
+
+0.9 Wed Nov 13 17:34:19 2012
+	- max distance added to stop calculations at a certain distance
+	- Code rehauled, thanks homercles
+	- count[30000] (dictionary) replaced with linked list
+
+0.8 Tue Oct 30 22:13:38 2012
+	- Optimized memory usage
+	- License set to perl in metas instead of LICENSE file only
+
+0.7 Tue Oct 30 20:11:42 2012
+	- Fixed pointer/int comparison warning
+	- Documentation updates
+
+0.6 Sat Oct 27 23:31:13 2012
+	- Document updates
+
+0.5 Sat Oct 27 18:29:57 2012
+	- Fixed pod utf8 stuff
+
+0.4 Sat Oct 27 15:58:22 2012
+	- Document updates
+
+0.3 Sat Oct 27 02:56:05 2012
+	- Fixex examples in documentation.
+
+0.2 Fri Oct 26 17:39:51 2012
+	- Fixed problem installing from cpan.
+
+
+
+
