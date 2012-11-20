@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+1.2 Tue Nov 20 00:35:20 2012
+	- Added minimum Perl requirement of 5.8.0 due to passing AV*s not being allowed in prior versions. 
+
 1.1 Sun Nov 18 18:47:43 2012
 	- Moved XS.pm to lib/Text/Levenshtein/Damerau/XS.pm
 

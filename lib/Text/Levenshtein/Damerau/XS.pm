@@ -1,10 +1,11 @@
 package Text::Levenshtein::Damerau::XS;
+use 5.8.0;
 
 require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '1.1';
+$Text::Levenshtein::Damerau::XS::VERSION = '1.2';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 

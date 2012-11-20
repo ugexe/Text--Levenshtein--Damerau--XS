@@ -1,8 +1,10 @@
+use 5.8.0;
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
 my $pm =   'lib/Text/Levenshtein/Damerau/XS.pm';
+my $repo = 'https://github.com/ugexe/Text--Levenshtein--Damerau--XS';
 my $bugs = 'https://rt.cpan.org/Public/Dist/Display.html?Name=Text-Levenshtein-Damerau-XS';
 
 WriteMakefile (
@@ -11,10 +13,12 @@ WriteMakefile (
     ABSTRACT_FROM => $pm,
     AUTHOR => 'Nick Logan <ug@skunkds.org>',
     LICENSE => 'perl',
+    MIN_PERL_VERSION => 5.8.0,
     PREREQ_PM => {
     },
     META_MERGE => {
         resources => {
+            repository => $repo,
             bugtracker => "$bugs",
         },
     },
