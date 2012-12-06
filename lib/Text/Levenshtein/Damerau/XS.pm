@@ -1,5 +1,5 @@
 package Text::Levenshtein::Damerau::XS;
-use 5.8.0;
+use 5.8.8;
 
 require Exporter;
 *import = \&Exporter::import;

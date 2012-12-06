@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+1.6 Thu Dec 06 15:52:57
+	- Minmum Perl version supported changed from 5.8.0 to 5.8.8
+
 1.5 Mon Dec 03 16:01:11
 	- Removed MIN_PERL_VERSION from makefile, fixing netbsd error
 
