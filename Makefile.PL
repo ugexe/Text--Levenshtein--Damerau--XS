@@ -13,7 +13,6 @@ WriteMakefile (
     ABSTRACT_FROM => $pm,
     AUTHOR => 'Nick Logan <ug@skunkds.org>',
     LICENSE => 'perl',
-    MIN_PERL_VERSION => 5.8.0,
     PREREQ_PM => {
     },
     META_MERGE => {
@@ -22,6 +21,7 @@ WriteMakefile (
             bugtracker => "$bugs",
         },
     },
+    depend => { '$(FIRST_MAKEFILE)' => '$(VERSION_FROM)' },
 );
 
 

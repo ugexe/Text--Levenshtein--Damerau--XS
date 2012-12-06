@@ -5,7 +5,7 @@ require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '1.2';
+$Text::Levenshtein::Damerau::XS::VERSION = '1.5';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
@@ -68,8 +68,6 @@ Speed improvements over L<Text::Levenshtein::Damerau::PP>:
                20.63 CPU) @ 48473.10/s (n=1000000)
 
 =head1 METHODS
-
-=head1 EXPORTABLE METHODS
 
 =head2 xs_edistance
 

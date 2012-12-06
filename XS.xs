@@ -109,53 +109,48 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
     find(head,src[i-1])->value = i;
   }
 
+  dict_free(head);
   return scores[ax+1][ay+1];
-}
-
-
-
-
-/* For passing in Perl data types and converting to C */
-
-static int cxs_edistance (AV* arraySource, AV* arrayTarget, SV* maxDistance) {
-    unsigned int i,j;
-    unsigned int lenSource = av_len(arraySource)+1;
-    unsigned int lenTarget = av_len(arrayTarget)+1;
-    int arrSource [ lenSource ];
-    int arrTarget [ lenTarget ];
-    unsigned int lenSource2 = 0;
-    unsigned int lenTarget2 = 0;
- 
-    for (i=0; i < lenSource; i++) {
-        SV** elem = av_fetch(arraySource, i, 0);
-        int retval = (int)SvIV(*elem);
- 
-        if (elem != NULL) {
-            arrSource[ i ] = retval;
-             lenSource2++;
-        }
-    }
-    for (j=0; j < lenTarget; j++) {
-        SV** elem = av_fetch(arrayTarget, j, 0);
-        int retval = (int)SvIV(*elem);
-
-        if (elem != NULL) {
-            arrTarget[ j ] = retval;
-             lenTarget2++;
-        }
-    }
-
-    return scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
 }
 
 
 MODULE = Text::Levenshtein::Damerau::XS	PACKAGE = Text::Levenshtein::Damerau::XS	
 
-PROTOTYPES: DISABLE
+PROTOTYPES: ENABLE
 
 int
 cxs_edistance (arraySource, arrayTarget, maxDistance)
 	AV *	arraySource
 	AV *	arrayTarget
 	SV *	maxDistance
+CODE:
+	unsigned int i,j;
+	unsigned int lenSource = av_len(arraySource)+1;
+	unsigned int lenTarget = av_len(arrayTarget)+1;
+	int arrSource [ lenSource ];
+	int arrTarget [ lenTarget ];
+	unsigned int lenSource2 = 0;
+	unsigned int lenTarget2 = 0;
+ 
+	for (i=0; i < lenSource; i++) {
+       	SV** elem = av_fetch(arraySource, i, 0);
+        	int retval = (int)SvIV(*elem);
+ 
+        	if (elem != NULL) {
+            		arrSource[ i ] = retval;
+             		lenSource2++;
+        	}
+    	}
+    	for (j=0; j < lenTarget; j++) {
+       	SV** elem = av_fetch(arrayTarget, j, 0);
+        	int retval = (int)SvIV(*elem);
 
+        	if (elem != NULL) {
+            		arrTarget[ j ] = retval;
+             		lenTarget2++;
+        	}
+    	}
+
+    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+OUTPUT:
+	RETVAL

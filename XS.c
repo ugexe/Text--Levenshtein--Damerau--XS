@@ -118,47 +118,12 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
     find(head,src[i-1])->value = i;
   }
 
+  dict_free(head);
   return scores[ax+1][ay+1];
 }
 
 
-
-
-/* For passing in Perl data types and converting to C */
-
-static int cxs_edistance (AV* arraySource, AV* arrayTarget, SV* maxDistance) {
-    unsigned int i,j;
-    unsigned int lenSource = av_len(arraySource)+1;
-    unsigned int lenTarget = av_len(arrayTarget)+1;
-    int arrSource [ lenSource ];
-    int arrTarget [ lenTarget ];
-    unsigned int lenSource2 = 0;
-    unsigned int lenTarget2 = 0;
- 
-    for (i=0; i < lenSource; i++) {
-        SV** elem = av_fetch(arraySource, i, 0);
-        int retval = (int)SvIV(*elem);
- 
-        if (elem != NULL) {
-            arrSource[ i ] = retval;
-             lenSource2++;
-        }
-    }
-    for (j=0; j < lenTarget; j++) {
-        SV** elem = av_fetch(arrayTarget, j, 0);
-        int retval = (int)SvIV(*elem);
-
-        if (elem != NULL) {
-            arrTarget[ j ] = retval;
-             lenTarget2++;
-        }
-    }
-
-    return scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
-}
-
-
-#line 162 "XS.c"
+#line 127 "XS.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -218,7 +183,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 222 "XS.c"
+#line 187 "XS.c"
 
 XS(XS_Text__Levenshtein__Damerau__XS_cxs_edistance); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Text__Levenshtein__Damerau__XS_cxs_edistance)
@@ -253,8 +218,36 @@ XS(XS_Text__Levenshtein__Damerau__XS_cxs_edistance)
 			"Text::Levenshtein::Damerau::XS::cxs_edistance",
 			"arrayTarget")
 ;
+#line 127 "XS.xs"
+	unsigned int i,j;
+	unsigned int lenSource = av_len(arraySource)+1;
+	unsigned int lenTarget = av_len(arrayTarget)+1;
+	int arrSource [ lenSource ];
+	int arrTarget [ lenTarget ];
+	unsigned int lenSource2 = 0;
+	unsigned int lenTarget2 = 0;
 
-	RETVAL = cxs_edistance(arraySource, arrayTarget, maxDistance);
+	for (i=0; i < lenSource; i++) {
+       	SV** elem = av_fetch(arraySource, i, 0);
+        	int retval = (int)SvIV(*elem);
+
+        	if (elem != NULL) {
+            		arrSource[ i ] = retval;
+             		lenSource2++;
+        	}
+    	}
+    	for (j=0; j < lenTarget; j++) {
+       	SV** elem = av_fetch(arrayTarget, j, 0);
+        	int retval = (int)SvIV(*elem);
+
+        	if (elem != NULL) {
+            		arrTarget[ j ] = retval;
+             		lenTarget2++;
+        	}
+    	}
+
+    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+#line 251 "XS.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
     XSRETURN(1);
@@ -284,7 +277,7 @@ XS_EXTERNAL(boot_Text__Levenshtein__Damerau__XS)
 #endif
     XS_VERSION_BOOTCHECK;
 
-        newXS("Text::Levenshtein::Damerau::XS::cxs_edistance", XS_Text__Levenshtein__Damerau__XS_cxs_edistance, file);
+        (void)newXSproto_portable("Text::Levenshtein::Damerau::XS::cxs_edistance", XS_Text__Levenshtein__Damerau__XS_cxs_edistance, file, "$$$");
 #if (PERL_REVISION == 5 && PERL_VERSION >= 9)
   if (PL_unitcheckav)
        call_list(PL_scopestack_ix, PL_unitcheckav);
