@@ -5,7 +5,7 @@ require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '1.5';
+$Text::Levenshtein::Damerau::XS::VERSION = '1.6';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
