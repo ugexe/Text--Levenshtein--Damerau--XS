@@ -131,7 +131,11 @@ CODE:
 	int arrTarget [ lenTarget ];
 	unsigned int lenSource2 = 0;
 	unsigned int lenTarget2 = 0;
- 
+	int matchBool = 1;
+	
+	if(lenSource != lenTarget)
+		matchBool = 0;
+
 	for (i=0; i < lenSource; i++) {
        	SV** elem = av_fetch(arraySource, i, 0);
         	int retval = (int)SvIV(*elem);
@@ -148,9 +152,18 @@ CODE:
         	if (elem != NULL) {
             		arrTarget[ j ] = retval;
              		lenTarget2++;
+
+			/* checks for match */
+			if(lenSource == lenTarget) 
+				if(j <= lenSource)
+					if(arrSource[j] != arrTarget[j])
+						matchBool = 0;
         	}
     	}
 
-    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+	if(matchBool == 1)
+		RETVAL = 0;
+	else
+	    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
 OUTPUT:
 	RETVAL

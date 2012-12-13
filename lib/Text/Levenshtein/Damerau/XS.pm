@@ -1,11 +1,11 @@
 package Text::Levenshtein::Damerau::XS;
-use 5.8.8;
+use 5.008_008;
 
 require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '1.6';
+$Text::Levenshtein::Damerau::XS::VERSION = '1.7';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
@@ -30,6 +30,7 @@ sub xs_edistance {
      
     return cxs_edistance( \@arr1, \@arr2, $maxd );
 }
+
 
 
 1;
