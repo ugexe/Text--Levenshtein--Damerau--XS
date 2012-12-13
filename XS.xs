@@ -58,7 +58,7 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
   unsigned int i,j;
   unsigned int scores[ax+2][ay+2];
   item *head = NULL;
-  int INF = ax + ay;
+  unsigned int INF = ax + ay;
   scores[0][0] = INF; 
  
   /* setup scoring matrix */
@@ -133,37 +133,47 @@ CODE:
 	unsigned int lenTarget2 = 0;
 	int matchBool = 1;
 	
-	if(lenSource != lenTarget)
-		matchBool = 0;
+	if(lenSource > 0 && lenTarget > 0) {
+		if(lenSource != lenTarget)
+			matchBool = 0;
+	
+		for (i=0; i < lenSource; i++) {
+	       	SV** elem = av_fetch(arraySource, i, 0);
+	        	int retval = (int)SvIV(*elem);
+	 
+	        	if (elem != NULL) {
+	            		arrSource[ i ] = retval;
+	             		lenSource2++;
 
-	for (i=0; i < lenSource; i++) {
-       	SV** elem = av_fetch(arraySource, i, 0);
-        	int retval = (int)SvIV(*elem);
- 
-        	if (elem != NULL) {
-            		arrSource[ i ] = retval;
-             		lenSource2++;
-        	}
-    	}
-    	for (j=0; j < lenTarget; j++) {
-       	SV** elem = av_fetch(arrayTarget, j, 0);
-        	int retval = (int)SvIV(*elem);
-
-        	if (elem != NULL) {
-            		arrTarget[ j ] = retval;
-             		lenTarget2++;
-
-			/* checks for match */
-			if(lenSource == lenTarget) 
+				/* checks for match */
+				if(i <= lenTarget)
+					if(arrSource[i] != arrTarget[i])
+						matchBool = 0;
+	        	}
+	    	}
+	    	for (j=0; j < lenTarget; j++) {
+	       	SV** elem = av_fetch(arrayTarget, j, 0);
+	        	int retval = (int)SvIV(*elem);
+	
+	        	if (elem != NULL) {
+	            		arrTarget[ j ] = retval;
+	             		lenTarget2++;
+	
+				/* checks for match */
 				if(j <= lenSource)
 					if(arrSource[j] != arrTarget[j])
 						matchBool = 0;
-        	}
-    	}
-
-	if(matchBool == 1)
-		RETVAL = 0;
-	else
-	    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+	        	}
+	    	}
+	
+		if(matchBool == 1)
+			RETVAL = 0;
+		else
+		    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+	}
+	else {
+		/* handle a blank string */
+		RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
+	}
 OUTPUT:
 	RETVAL

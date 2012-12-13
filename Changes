@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+1.8 Thu Dec 13 19:07:47
+	- Fixed bug created by last revision string check
+
 1.7 Thu Dec 13 00:39:41
 	- Matching string check before calculations take place
 	- MIN_PERL_VERSION added back to Makefile using different number format
