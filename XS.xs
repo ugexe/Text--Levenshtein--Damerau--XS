@@ -54,9 +54,8 @@ static item* find(item* head,unsigned int key){
  
 /* All calculations/work are done here */
 
-static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
+static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance,unsigned int **scores){
   unsigned int i,j;
-  unsigned int scores[ax+2][ay+2];
   item *head = NULL;
   unsigned int INF = ax + ay;
   scores[0][0] = INF; 
@@ -168,8 +167,22 @@ CODE:
 
     if(matchBool == 1)
       RETVAL = 0;
-    else
-      RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+    else {
+      unsigned int **a_scores;
+      int md = (int)SvIV(maxDistance);
+
+      Newx(a_scores, lenSource2+2, unsigned int*);
+      for(i = 0; i < lenSource2+2; i++) {
+        Newx(a_scores[i], lenTarget2+2, unsigned int);
+      }
+
+      RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,md,a_scores);
+
+      for(i = 0; i < lenSource2+2; i++) {
+        Safefree(a_scores[i]);
+      }
+      Safefree(a_scores);
+    }
   }
   else {
     /* handle a blank string */
