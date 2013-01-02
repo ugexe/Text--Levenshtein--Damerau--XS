@@ -8,5 +8,6 @@ README
 t/00_compile.t
 t/01_imports.t
 t/02_xs_edistance.t
+t/03_cxs_edistance.t
 XS.xs
 xt/pod.t
