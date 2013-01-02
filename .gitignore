@@ -1,0 +1,10 @@
+blib
+*.bs
+*.c
+*.o
+*.def
+dll.base
+dll.exp
+Makefile
+pm_to_blib
+MYMETA.*
