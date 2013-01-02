@@ -60,11 +60,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Text::Levenshtein::Damerau::XS
 NAME_SYM = Text_Levenshtein_Damerau_XS
-VERSION = 1.8
+VERSION = 1.9
 VERSION_MACRO = VERSION
-VERSION_SYM = 1_8
+VERSION_SYM = 1_9
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 1.8
+XS_VERSION = 1.9
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -266,7 +266,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Text-Levenshtein-Damerau-XS
-DISTVNAME = Text-Levenshtein-Damerau-XS-1.8
+DISTVNAME = Text-Levenshtein-Damerau-XS-1.9
 
 
 # --- MakeMaker macro section:
@@ -591,7 +591,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'resources:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Text-Levenshtein-Damerau-XS' >> META_new.yml
 	$(NOECHO) $(ECHO) '  repository: https://github.com/ugexe/Text--Levenshtein--Damerau--XS' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: 1.8' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: 1.9' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -641,7 +641,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '         "url" : "https://github.com/ugexe/Text--Levenshtein--Damerau--XS"' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "1.8"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "1.9"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -974,7 +974,7 @@ testdb_static :: pure_all $(MAP_TARGET)
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1.8">' > $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="1.9">' > $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>XS Damerau Levenshtein edit distance.</ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Nick Logan &lt;ug@skunkds.org&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd

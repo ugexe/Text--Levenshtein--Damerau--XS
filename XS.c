@@ -7,12 +7,15 @@
  */
 
 #line 1 "XS.xs"
+#define PERL_NO_GET_CONTEXT
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
  
+/* Remember: doesn't work for MIN(1,i++) */
 #define MIN(a,b) (((a)<(b))?(a):(b))
- 
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 
 /* Our unsorted dictionary/hash tracker. */
 /* Note we use character ints, not chars */
@@ -33,12 +36,12 @@ static item* push(int key,unsigned int value,item* curr){
   return head;
 }
 
-static item* dict_free(item* head){
+static void dict_free(item* head){
   item* iterator = head;
   while(iterator){
-	item* temp = iterator;
-	iterator = iterator->next;
-	Safefree(temp);
+    item* temp = iterator;
+    iterator = iterator->next;
+    Safefree(temp);
   }
 
   head = NULL;
@@ -65,26 +68,29 @@ static item* find(item* head,unsigned int key){
 
 static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
   unsigned int i,j;
-  unsigned int scores[ax+2][ay+2];
   item *head = NULL;
   unsigned int INF = ax + ay;
-  scores[0][0] = INF; 
- 
+  unsigned int *scores = malloc( (ax + 2) * (ay + 2) * sizeof(unsigned int *) );
+  scores[0] = INF;  
+  unsigned int axaymax = MAX(ax,ay);
+
   /* setup scoring matrix */
-  for(i=0;i<=ax;i++){
-    scores[i+1][1] = i;
-    scores[i+1][0] = INF;
- 
-    if(find(head,src[i]) == NULL){
-      head = push(src[i],0,head);
+  for(i=0;i<=axaymax;i++){
+    if(i <= ax) {
+        scores[(i+1) * (ay + 2) + 1] = i;
+        scores[(i+1) * (ay + 2) + 0] = INF;
+
+        if(find(head,src[i]) == NULL){
+            head = push(src[i],0,head);
+        }
     }
-  }
-  for(j=0;j<=ay;j++){
-    scores[1][j+1] = j;
-    scores[0][j+1] = INF;
- 
-    if(find(head,tgt[j]) == NULL){
-      head = push(tgt[j],0,head);
+    if(i <= ay) {
+        scores[1 * (ay + 2) + (i + 1)] = i;
+        scores[0 * (ay + 2) + (i + 1)] = INF;
+
+        if(find(head,tgt[i]) == NULL){
+            head = push(tgt[i],0,head);
+        }
     }
   }
  
@@ -98,32 +104,32 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
       j1 = db;
  
       if(src[i-1] == tgt[j-1]){
-        scores[i+1][j+1] = scores[i][j];
+        scores[(i+1) * (ay + 2) + (j + 1)] = scores[i * (ay + 2) + j];
         db = j;
-      }else{
-        scores[i+1][j+1] = MIN(scores[i][j], MIN(scores[i+1][j], scores[i][j+1])) + 1;
-      }
-	 
-      scores[i+1][j+1] = MIN(scores[i+1][j+1], scores[i1][j1] + i - i1 - 1 + j - j1);
+      }else{ 
+        scores[(i+1) * (ay + 2) + (j + 1)] = MIN(scores[i * (ay + 2) + j], MIN(scores[(i+1) * (ay + 2) + j], scores[i * (ay + 2) + (j + 1)])) + 1;
+      } 
+
+      scores[(i+1) * (ay + 2) + (j + 1)] = MIN(scores[(i+1) * (ay + 2) + (j + 1)], (scores[i1 * (ay + 2) + j1] + i - i1 - 1 + j - j1));
     }
 
-
-    /* We will give up here if the */
-    /* current score > maxDistance */
-    if(maxDistance != 0 && maxDistance < scores[i+1][ay+1]) {
-       dict_free(head); 
-	return -1;
+    /* We will return -1 here if the */
+    /* current score > maxDistance   */
+    if(maxDistance != 0 && maxDistance < scores[(i+1) * (ay + 2) + (ay+1)]) {
+      dict_free(head);
+      return -1;
     }
 
+    
     find(head,src[i-1])->value = i;
   }
 
   dict_free(head);
-  return scores[ax+1][ay+1];
+  return scores[(ax+1) * (ay + 2) + (ay + 1)];
 }
 
 
-#line 127 "XS.c"
+#line 133 "XS.c"
 #ifndef PERL_UNUSED_VAR
 #  define PERL_UNUSED_VAR(var) if (0) var = var
 #endif
@@ -183,7 +189,7 @@ S_croak_xs_usage(pTHX_ const CV *const cv, const char *const params)
 #define newXSproto_portable(name, c_impl, file, proto) (PL_Sv=(SV*)newXS(name, c_impl, file), sv_setpv(PL_Sv, proto), (CV*)PL_Sv)
 #endif /* !defined(newXS_flags) */
 
-#line 187 "XS.c"
+#line 193 "XS.c"
 
 XS(XS_Text__Levenshtein__Damerau__XS_cxs_edistance); /* prototype to pass -Wmissing-prototypes */
 XS(XS_Text__Levenshtein__Damerau__XS_cxs_edistance)
@@ -218,58 +224,52 @@ XS(XS_Text__Levenshtein__Damerau__XS_cxs_edistance)
 			"Text::Levenshtein::Damerau::XS::cxs_edistance",
 			"arrayTarget")
 ;
-#line 127 "XS.xs"
-	unsigned int i,j;
-	unsigned int lenSource = av_len(arraySource)+1;
-	unsigned int lenTarget = av_len(arrayTarget)+1;
-	int arrSource [ lenSource ];
-	int arrTarget [ lenTarget ];
-	unsigned int lenSource2 = 0;
-	unsigned int lenTarget2 = 0;
-	int matchBool = 1;
+#line 133 "XS.xs"
+  unsigned int i,j;
+  unsigned int lenSource = av_len(arraySource)+1;
+  unsigned int lenTarget = av_len(arrayTarget)+1;
+  int arrSource [ lenSource ];
+  int arrTarget [ lenTarget ];
+  unsigned int lenSource2 = 0;
+  unsigned int lenTarget2 = 0;
+  int matchBool = 1;
+  int penalty = 0;
 
-	if(lenSource > 0 && lenTarget > 0) {
-		if(lenSource != lenTarget)
-			matchBool = 0;
+  if(lenSource > 0 && lenTarget > 0) {
+    if(lenSource != lenTarget)
+      matchBool = 0;
 
-		for (i=0; i < lenSource; i++) {
-	       	SV** elem = av_fetch(arraySource, i, 0);
-	        	int retval = (int)SvIV(*elem);
+    unsigned int srctgt_max = MAX(lenSource,lenTarget);
+    for (i=0; i < srctgt_max; i++) {
+      if(i < lenSource) {
+          SV** elem = av_fetch(arraySource, i, 0);
+          *(SV **)&elem = (elem ? *elem : &PL_sv_undef);
+          arrSource[ i ] = (int)SvIV((SV *)elem);
+          lenSource2++;
+      }
+      if(i < lenTarget) {
+          SV** elem2 = av_fetch(arrayTarget, i, 0);
+          *(SV **)&elem2 = (elem2 ? *elem2 : &PL_sv_undef);  
+          arrTarget[ i ] = (int)SvIV((SV *)elem2);
+          lenTarget2++;
 
-	        	if (elem != NULL) {
-	            		arrSource[ i ] = retval;
-	             		lenSource2++;
+          /* checks for match */
+          if(arrSource[i] != arrTarget[i])
+            matchBool = 0;
+      }
+    }
 
-				/* checks for match */
-				if(i <= lenTarget)
-					if(arrSource[i] != arrTarget[i])
-						matchBool = 0;
-	        	}
-	    	}
-	    	for (j=0; j < lenTarget; j++) {
-	       	SV** elem = av_fetch(arrayTarget, j, 0);
-	        	int retval = (int)SvIV(*elem);
-
-	        	if (elem != NULL) {
-	            		arrTarget[ j ] = retval;
-	             		lenTarget2++;
-
-				/* checks for match */
-				if(j <= lenSource)
-					if(arrSource[j] != arrTarget[j])
-						matchBool = 0;
-	        	}
-	    	}
-
-		if(matchBool == 1)
-			RETVAL = 0;
-		else
-		    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
-	}
-	else {
-		/* handle a blank string */
-		RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
-	}
+    if(matchBool == 1)
+      RETVAL = 0;
+    else {
+      int score = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+      RETVAL = (score >= 0)?score+penalty:score;
+    }
+  }
+  else {
+    /* handle a blank string */
+    RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
+  }
 #line 274 "XS.c"
 	XSprePUSH; PUSHi((IV)RETVAL);
     }
