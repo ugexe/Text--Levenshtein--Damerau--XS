@@ -8,6 +8,4 @@ dll.exp
 pm_to_blib
 MYMETA.*
 MANIFEST*
-!MANIFEST.SKIP
-Makefile*
-!Makefile.PL
+/Makefile

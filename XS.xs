@@ -108,6 +108,7 @@ static int scores(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned
     /* current score > maxDistance   */
     if(maxDistance != 0 && maxDistance < scores[(i+1) * (ay + 2) + (ay+1)]) {
       dict_free(head);
+      free(scores);
       return -1;
     }
 
