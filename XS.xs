@@ -27,9 +27,9 @@ static item* push(int key,unsigned int value,item* curr){
 static item* dict_free(item* head){
   item* iterator = head;
   while(iterator){
-	item* temp = iterator;
-	iterator = iterator->next;
-	Safefree(temp);
+    item* temp = iterator;
+    iterator = iterator->next;
+    Safefree(temp);
   }
 
   head = NULL;
@@ -54,9 +54,8 @@ static item* find(item* head,unsigned int key){
  
 /* All calculations/work are done here */
 
-static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
+static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance,unsigned int **scores){
   unsigned int i,j;
-  unsigned int scores[ax+2][ay+2];
   item *head = NULL;
   unsigned int INF = ax + ay;
   scores[0][0] = INF; 
@@ -94,7 +93,7 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
       }else{
         scores[i+1][j+1] = MIN(scores[i][j], MIN(scores[i+1][j], scores[i][j+1])) + 1;
       }
-	 
+
       scores[i+1][j+1] = MIN(scores[i+1][j+1], scores[i1][j1] + i - i1 - 1 + j - j1);
     }
 
@@ -102,8 +101,8 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
     /* We will give up here if the */
     /* current score > maxDistance */
     if(maxDistance != 0 && maxDistance < scores[i+1][ay+1]) {
-       dict_free(head); 
-	return -1;
+      dict_free(head);
+      return -1;
     }
 
     find(head,src[i-1])->value = i;
@@ -114,66 +113,80 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
 }
 
 
-MODULE = Text::Levenshtein::Damerau::XS	PACKAGE = Text::Levenshtein::Damerau::XS	
+MODULE = Text::Levenshtein::Damerau::XS    PACKAGE = Text::Levenshtein::Damerau::XS
 
 PROTOTYPES: ENABLE
 
 int
 cxs_edistance (arraySource, arrayTarget, maxDistance)
-	AV *	arraySource
-	AV *	arrayTarget
-	SV *	maxDistance
+  AV *    arraySource
+  AV *    arrayTarget
+  SV *    maxDistance
 CODE:
-	unsigned int i,j;
-	unsigned int lenSource = av_len(arraySource)+1;
-	unsigned int lenTarget = av_len(arrayTarget)+1;
-	int arrSource [ lenSource ];
-	int arrTarget [ lenTarget ];
-	unsigned int lenSource2 = 0;
-	unsigned int lenTarget2 = 0;
-	int matchBool = 1;
-	
-	if(lenSource > 0 && lenTarget > 0) {
-		if(lenSource != lenTarget)
-			matchBool = 0;
-	
-		for (i=0; i < lenSource; i++) {
-	       	SV** elem = av_fetch(arraySource, i, 0);
-	        	int retval = (int)SvIV(*elem);
-	 
-	        	if (elem != NULL) {
-	            		arrSource[ i ] = retval;
-	             		lenSource2++;
+  unsigned int i,j;
+  unsigned int lenSource = av_len(arraySource)+1;
+  unsigned int lenTarget = av_len(arrayTarget)+1;
+  int arrSource [ lenSource ];
+  int arrTarget [ lenTarget ];
+  unsigned int lenSource2 = 0;
+  unsigned int lenTarget2 = 0;
+  int matchBool = 1;
 
-				/* checks for match */
-				if(i <= lenTarget)
-					if(arrSource[i] != arrTarget[i])
-						matchBool = 0;
-	        	}
-	    	}
-	    	for (j=0; j < lenTarget; j++) {
-	       	SV** elem = av_fetch(arrayTarget, j, 0);
-	        	int retval = (int)SvIV(*elem);
-	
-	        	if (elem != NULL) {
-	            		arrTarget[ j ] = retval;
-	             		lenTarget2++;
-	
-				/* checks for match */
-				if(j <= lenSource)
-					if(arrSource[j] != arrTarget[j])
-						matchBool = 0;
-	        	}
-	    	}
-	
-		if(matchBool == 1)
-			RETVAL = 0;
-		else
-		    	RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
-	}
-	else {
-		/* handle a blank string */
-		RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
-	}
+  if(lenSource > 0 && lenTarget > 0) {
+    if(lenSource != lenTarget)
+      matchBool = 0;
+
+    for (i=0; i < lenSource; i++) {
+      SV** elem = av_fetch(arraySource, i, 0);
+      int retval = (int)SvIV(*elem);
+
+      if (elem != NULL) {
+        arrSource[ i ] = retval;
+        lenSource2++;
+
+        /* checks for match */
+        if(i <= lenTarget)
+          if(arrSource[i] != arrTarget[i])
+            matchBool = 0;
+      }
+    }
+    for (j=0; j < lenTarget; j++) {
+      SV** elem = av_fetch(arrayTarget, j, 0);
+      int retval = (int)SvIV(*elem);
+
+      if (elem != NULL) {
+        arrTarget[ j ] = retval;
+        lenTarget2++;
+
+        /* checks for match */
+        if(j <= lenSource)
+          if(arrSource[j] != arrTarget[j])
+            matchBool = 0;
+      }
+    }
+
+    if(matchBool == 1)
+      RETVAL = 0;
+    else {
+      unsigned int **a_scores;
+      int md = (int)SvIV(maxDistance);
+
+      Newx(a_scores, lenSource2+2, unsigned int*);
+      for(i = 0; i < lenSource2+2; i++) {
+        Newx(a_scores[i], lenTarget2+2, unsigned int);
+      }
+
+      RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,md,a_scores);
+
+      for(i = 0; i < lenSource2+2; i++) {
+        Safefree(a_scores[i]);
+      }
+      Safefree(a_scores);
+    }
+  }
+  else {
+    /* handle a blank string */
+    RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
+  }
 OUTPUT:
-	RETVAL
+  RETVAL
