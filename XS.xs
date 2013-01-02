@@ -18,13 +18,25 @@ struct dictionary{
 };
 typedef struct dictionary item;
  
-static item* push(int key,unsigned int value,item* curr){
+static __inline item* push(int key,unsigned int value,item* curr){
   item* head;
   Newx(head, sizeof(item), item);   
   head->key = key;
   head->value = value;
   head->next = curr;
   return head;
+}
+ 
+static __inline item* find(item* head,unsigned int key){
+  item* iterator = head;
+  while(iterator){
+    if(iterator->key == key){
+      return iterator;
+    }
+    iterator = iterator->next;
+  }
+ 
+  return NULL;
 }
 
 static void dict_free(item* head){
@@ -37,18 +49,6 @@ static void dict_free(item* head){
 
   head = NULL;
 }
- 
-static item* find(item* head,unsigned int key){
-  item* iterator = head;
-  while(iterator){
-    if(iterator->key == key){
-      return iterator;
-    }
-    iterator = iterator->next;
-  }
- 
-  return NULL;
-}
 
 /* End of Dictionary Stuff */
 
@@ -57,7 +57,7 @@ static item* find(item* head,unsigned int key){
  
 /* All calculations/work are done here */
 
-static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
+static int scores(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
   unsigned int i,j;
   item *head = NULL;
   unsigned int INF = ax + ay;
@@ -115,8 +115,10 @@ static int scores(int src[],int tgt[],unsigned int ax,unsigned int ay,unsigned i
     find(head,src[i-1])->value = i;
   }
 
+  unsigned int score = scores[(ax+1) * (ay + 2) + (ay + 1)];
   dict_free(head);
-  return scores[(ax+1) * (ay + 2) + (ay + 1)];
+  free(scores);
+  return score;
 }
 
 
@@ -138,23 +140,21 @@ CODE:
   unsigned int lenSource2 = 0;
   unsigned int lenTarget2 = 0;
   int matchBool = 1;
-  int penalty = 0;
 
   if(lenSource > 0 && lenTarget > 0) {
     if(lenSource != lenTarget)
       matchBool = 0;
 
+    /* Convert Perl array to C array */
     unsigned int srctgt_max = MAX(lenSource,lenTarget);
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
-          SV** elem = av_fetch(arraySource, i, 0);
-          *(SV **)&elem = (elem ? *elem : &PL_sv_undef);
+          SV* elem = av_shift(arraySource);
           arrSource[ i ] = (int)SvIV((SV *)elem);
           lenSource2++;
       }
       if(i < lenTarget) {
-          SV** elem2 = av_fetch(arrayTarget, i, 0);
-          *(SV **)&elem2 = (elem2 ? *elem2 : &PL_sv_undef);  
+          SV* elem2 = av_shift(arrayTarget);
           arrTarget[ i ] = (int)SvIV((SV *)elem2);
           lenTarget2++;
 	
@@ -163,12 +163,13 @@ CODE:
             matchBool = 0;
       }
     }
+    av_undef(arraySource);
+    av_undef(arrayTarget);
 
     if(matchBool == 1)
       RETVAL = 0;
     else {
-      int score = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
-      RETVAL = (score >= 0)?score+penalty:score;
+      RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
     }
   }
   else {

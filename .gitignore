@@ -5,6 +5,9 @@ blib
 *.def
 dll.base
 dll.exp
-Makefile
 pm_to_blib
 MYMETA.*
+MANIFEST*
+!MANIFEST.SKIP
+Makefile*
+!Makefile.PL
