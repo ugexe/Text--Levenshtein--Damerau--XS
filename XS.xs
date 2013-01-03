@@ -2,14 +2,17 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
- 
-/* Remember: doesn't work for MIN(1,i++) */
+
+#undef malloc
+#undef free
+
+/* Beware double evaluation */ 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
 
-/* Our unsorted dictionary/hash tracker. */
-/* Note we use character ints, not chars */
+/* Our unsorted dictionary linked list.   */
+/* Note we use character ints, not chars. */
 
 struct dictionary{
   int key;
@@ -17,10 +20,11 @@ struct dictionary{
   struct dictionary* next;
 };
 typedef struct dictionary item;
- 
+
+
 static __inline item* push(int key,unsigned int value,item* curr){
   item* head;
-  Newx(head, sizeof(item), item);   
+  head = malloc(sizeof(item*));   
   head->key = key;
   head->value = value;
   head->next = curr;
@@ -44,7 +48,7 @@ static void dict_free(item* head){
   while(iterator){
     item* temp = iterator;
     iterator = iterator->next;
-    Safefree(temp);
+    free(temp);
   }
 
   head = NULL;
@@ -57,19 +61,19 @@ static void dict_free(item* head){
  
 /* All calculations/work are done here */
 
-static int scores(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
-  unsigned int i,j;
+static int distance(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned int ay,unsigned int maxDistance){
   item *head = NULL;
-  unsigned int INF = ax + ay;
-  unsigned int *scores = malloc( (ax + 2) * (ay + 2) * sizeof(unsigned int *) );
-  scores[0] = INF;  
-  unsigned int axaymax = MAX(ax,ay);
+  unsigned int i,j;
+  unsigned int inf = ax + ay;
+  unsigned int *scores = malloc( (ax + 2) * (ay + 2) * sizeof(unsigned int) );
+  scores[0] = inf;  
+  unsigned int axay_max = MAX(ax,ay);
 
   /* setup scoring matrix */
-  for(i=0;i<=axaymax;i++){
+  for(i=0;i<=axay_max;i++){
     if(i <= ax) {
         scores[(i+1) * (ay + 2) + 1] = i;
-        scores[(i+1) * (ay + 2) + 0] = INF;
+        scores[(i+1) * (ay + 2) + 0] = inf;
 
         if(find(head,src[i]) == NULL){
             head = push(src[i],0,head);
@@ -77,7 +81,7 @@ static int scores(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned
     }
     if(i <= ay) {
         scores[1 * (ay + 2) + (i + 1)] = i;
-        scores[0 * (ay + 2) + (i + 1)] = INF;
+        scores[0 * (ay + 2) + (i + 1)] = inf;
 
         if(find(head,tgt[i]) == NULL){
             head = push(tgt[i],0,head);
@@ -88,12 +92,12 @@ static int scores(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned
  
   /* work loop */
   unsigned int db,i1,j1;
-  for(i=1;i<=ax;i++){
+  for(i=1;i<=ax;i++){ 
     db = 0;
     for(j=1;j<=ay;j++){
       i1 = find(head,tgt[j-1])->value;
       j1 = db;
- 
+
       if(src[i-1] == tgt[j-1]){
         scores[(i+1) * (ay + 2) + (j + 1)] = scores[i * (ay + 2) + j];
         db = j;
@@ -122,60 +126,62 @@ static int scores(unsigned int src[],unsigned int tgt[],unsigned int ax,unsigned
   return score;
 }
 
-
 MODULE = Text::Levenshtein::Damerau::XS    PACKAGE = Text::Levenshtein::Damerau::XS
 
 PROTOTYPES: ENABLE
 
-int
+void
 cxs_edistance (arraySource, arrayTarget, maxDistance)
   AV *    arraySource
   AV *    arrayTarget
   SV *    maxDistance
-CODE:
+PPCODE:
+  dXSTARG;
+  PUSHs(TARG);
+  PUTBACK;
+  {
   unsigned int i,j;
   unsigned int lenSource = av_len(arraySource)+1;
   unsigned int lenTarget = av_len(arrayTarget)+1;
-  int arrSource [ lenSource ];
-  int arrTarget [ lenTarget ];
-  unsigned int lenSource2 = 0;
-  unsigned int lenTarget2 = 0;
-  int matchBool = 1;
+  int retval;
 
   if(lenSource > 0 && lenTarget > 0) {
+    int matchBool;
+    unsigned int srctgt_max = MAX(lenSource,lenTarget);
     if(lenSource != lenTarget)
       matchBool = 0;
+    else matchBool = 1;
 
     /* Convert Perl array to C array */
-    unsigned int srctgt_max = MAX(lenSource,lenTarget);
+    int arrTarget [ lenTarget ];
+    int arrSource [ lenSource ];
+    int maxDistance_int = SvIV(maxDistance);
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
-          SV* elem = av_shift(arraySource);
+          SV* elem = sv_2mortal(av_shift(arraySource));
           arrSource[ i ] = (int)SvIV((SV *)elem);
-          lenSource2++;
       }
       if(i < lenTarget) {
-          SV* elem2 = av_shift(arrayTarget);
+          SV* elem2 = sv_2mortal(av_shift(arrayTarget));
           arrTarget[ i ] = (int)SvIV((SV *)elem2);
-          lenTarget2++;
 	
           /* checks for match */
-          if(arrSource[i] != arrTarget[i])
-            matchBool = 0;
+	   if(i < lenSource)
+            if(arrSource[i] != arrTarget[i])
+              matchBool = 0;
       }
     }
-    av_undef(arraySource);
-    av_undef(arrayTarget);
 
     if(matchBool == 1)
-      RETVAL = 0;
+      retval = 0;
     else {
-      RETVAL = scores(arrSource,arrTarget,lenSource2,lenTarget2,(int)SvIV(maxDistance));
+      retval = distance(arrSource,arrTarget,lenSource,lenTarget, maxDistance_int);
     }
   }
   else {
     /* handle a blank string */
-    RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
+    retval = (lenSource>lenTarget)?lenSource:lenTarget;
   }
- OUTPUT:
-  RETVAL
+    sv_setiv_mg(TARG, retval);
+    return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
+  }

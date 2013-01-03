@@ -5,7 +5,7 @@ require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '1.9';
+$Text::Levenshtein::Damerau::XS::VERSION = '1.91';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
@@ -21,9 +21,7 @@ sub xs_edistance {
     # Wrapper for XS cxs_edistance function
     my $str1 = shift;
     my $str2 = shift;
-    my $maxd = shift;
-    $maxd ||= 0;
-    $maxd = 0 unless($maxd =~ m/^\d+$/);
+    my $maxd = shift || 0;
 
     my @arr1 = unpack 'U*', $str1;
     my @arr2 = unpack 'U*', $str2;

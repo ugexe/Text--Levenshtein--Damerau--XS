@@ -11,4 +11,5 @@ MYMETA.*
 .c$
 .o$
 .bs$
-
+.s$
+.SKIP$
