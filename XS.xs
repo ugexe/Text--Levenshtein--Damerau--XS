@@ -61,16 +61,16 @@ static void dict_free(item* head){
  
 /* All calculations/work are done here */
 
-static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int mxDistance){
+static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
   item *head = NULL;
   unsigned int i,j;
   unsigned int inf = x + y;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
   scores[0] = inf;  
-  unsigned int xy_mx = Mx(x,y);
+  unsigned int xy_max = MAX(x,y);
 
   /* setup scoring matrix */
-  for(i=0;i<=xy_mx;i++){
+  for(i=0;i<=xy_max;i++){
     if(i <= x) {
         scores[(i+1) * (y + 2) + 1] = i;
         scores[(i+1) * (y + 2) + 0] = inf;
@@ -109,8 +109,8 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
     }
 
     /* We will return -1 here if the */
-    /* current score > mxDistance   */
-    if(mxDistance != 0 && mxDistance < scores[(i+1) * (y + 2) + (y+1)]) {
+    /* current score > maxDistance   */
+    if(maxDistance != 0 && maxDistance < scores[(i+1) * (y + 2) + (y+1)]) {
       dict_free(head);
       free(scores);
       return -1;
