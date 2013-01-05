@@ -22,11 +22,10 @@ struct dictionary{
 typedef struct dictionary item;
 
 
-static __inline item* push(int key,unsigned int value,item* curr){
+static __inline item* push(unsigned int key,item* curr){
   item* head;
-  head = malloc(sizeof(item*));   
+  head = malloc(sizeof(item));   
   head->key = key;
-  head->value = value;
   head->next = curr;
   return head;
 }
@@ -64,8 +63,8 @@ static void dict_free(item* head){
 static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
   item *head = NULL;
   unsigned int i,j;
-  unsigned int inf = x + y;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
+  unsigned int inf = x + y;
   scores[0] = inf;  
   unsigned int xy_max = MAX(x,y);
 
@@ -76,7 +75,7 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
         scores[(i+1) * (y + 2) + 0] = inf;
 
         if(find(head,src[i]) == NULL){
-            head = push(src[i],0,head);
+            head = push(src[i],head);
         }
     }
     if(i <= y) {
@@ -84,7 +83,7 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
         scores[0 * (y + 2) + (i + 1)] = inf;
 
         if(find(head,tgt[i]) == NULL){
-            head = push(tgt[i],0,head);
+            head = push(tgt[i],head);
         }
     }
   }
@@ -156,6 +155,7 @@ PPCODE:
     int arrTarget [ lenTarget ];
     int arrSource [ lenSource ];
     int maxDistance_int = SvIV(maxDistance);
+
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
           SV* elem = sv_2mortal(av_shift(arraySource));
