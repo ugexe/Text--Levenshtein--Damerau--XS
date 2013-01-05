@@ -3,10 +3,10 @@ use Benchmark;
 use utf8;
 
 my @a = (1,2,3,4);
-my @b = (1,3,2,4);
+my @b = (1,3,2,4,5);
 
 my $x = "asdfg";
-my $y = "gdfas";
+my $y = "dfas";
 
 print "\n------------------------------------------------\n";
 
