@@ -21,79 +21,13 @@ struct dictionary{
 };
 typedef struct dictionary item;
 
-static __inline item* uniquePush2(item* head,unsigned int key1,unsigned int key2){
-  item* iterator = head;
-  int key1_found = 0;
-  int key2_found = 0;
-
-  while(iterator){
-    if(iterator->key == key1 && key1_found == 0){
-      key1_found = 1;
-    }
-    else if(iterator->key == key2 && key2_found == 0) {
-      key2_found = 1;
-    }
-
-    if(key1_found + key2_found == 2)
-       return head;
-    iterator = iterator->next;
-  }
- 
-  if(key1_found == 0 && key2_found == 0) {
-     item* key2_head;
-     key2_head = malloc(sizeof(item));   
-     key2_head->key = key2;
-     key2_head->value = 0;
-     key2_head->next = head;
-
-     item* key1_head;
-     key1_head = malloc(sizeof(item));   
-     key1_head->key = key1;
-     key1_head->value = 0;
-     key1_head->next = key2_head;  
-
-     return key1_head;
-  }
-  else if(key1_found == 0) {
-     item* key1_head;
-     key1_head = malloc(sizeof(item));   
-     key1_head->key = key1;
-     key1_head->value = 0;
-     key1_head->next = head;
-
-     return key1_head;
-  }
-  else if(key2_found == 0) {
-     item* key2_head;
-     key2_head = malloc(sizeof(item));   
-     key2_head->key = key2;
-     key2_head->value = 0;
-     key2_head->next = head;
-
-     return key2_head;
-  }
-
-  return head; 
-}
-
-static __inline item* uniquePush1(item* head,unsigned int key1){
-  item* iterator = head;
-  int key1_found = 0;
-
-  while(iterator){
-    if(iterator->key == key1){
-      return head;
-    }
-    iterator = iterator->next;
-  }
- 
-  item* key1_head;
-  key1_head = malloc(sizeof(item));   
-  key1_head->key = key1;
-  key1_head->value = 0;
-  key1_head->next = head;
-
-  return key1_head; 
+static __inline item* push(unsigned int key,unsigned int value,item* curr){
+  item* head;
+  head = malloc(sizeof(item));   
+  head->key = key;
+  head->value = value;
+  head->next = curr;
+  return head;
 }
 
 static __inline item* find(item* head,unsigned int key){
@@ -106,6 +40,46 @@ static __inline item* find(item* head,unsigned int key){
   }
  
   return NULL;
+}
+
+static __inline item* uniquePush2(item* head,unsigned int key1,unsigned int key2){
+  item* iterator = head;
+  int key1_found = 0;
+  int key2_found = 0;
+
+  while(iterator){
+    if(key1_found == 0 && iterator->key == key1){
+      key1_found = 1;
+    }
+    if(key2_found == 0 && iterator->key == key2){
+      key2_found = 1;
+    }
+
+    if(key1_found + key2_found == 2)
+       return head;
+    iterator = iterator->next;
+  }
+ 
+  if(key1_found == 0 && key2_found == 0) 
+     return push(key2,0,push(key1,0,head));
+  else if(key1_found == 0)
+     return push(key1,0,head);
+  else if(key2_found == 0) 
+     return push(key2,0,head);
+}
+
+static __inline item* uniquePush1(item* head,unsigned int key){
+  item* iterator = head;
+  int key_found = 0;
+
+  while(iterator){
+    if(iterator->key == key){
+      return head;
+    }
+    iterator = iterator->next;
+  }
+ 
+  return push(key,0,head); 
 }
 
 static void dict_free(item* head){
@@ -146,7 +120,7 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
     }
 
     if(i <= x && i <= y) {
-	  /* uniquePush2 not working correctly yet */
+	  /* uniquePush2 -still- not working correctly */
          //head = uniquePush2(head,src[i],tgt[1]); 
          head = uniquePush1(head,src[i]);
          head = uniquePush1(head,tgt[i]);
