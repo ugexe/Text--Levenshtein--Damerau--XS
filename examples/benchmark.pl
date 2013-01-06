@@ -42,7 +42,7 @@ cmpthese($small_results);
 print "------------------------------------------------\n";
 print "MEDIUM STRINGS (4*1000 chars per string)\n";
 
-my $medium_results = timethese($test_count, { xs => 'xs_edistance($x2,$y2);', csx => 'print cxs_edistance(\@a2,\@b2,0);' }); 
+my $medium_results = timethese($test_count, { xs => 'xs_edistance($x2,$y2);', csx => 'cxs_edistance(\@a2,\@b2,0);' }); 
 cmpthese($medium_results);
 
 print "------------------------------------------------\n";
