@@ -21,12 +21,24 @@ struct dictionary{
 };
 typedef struct dictionary item;
 
-static __inline item* push(unsigned int key,item* curr){
+static __inline item* push1(unsigned int key,item* curr){
   item* head;
   head = malloc(sizeof(item));   
   head->key = key;
   head->value = 0;
   head->next = curr;
+  return head;
+}
+
+static __inline item* push2(unsigned int key1,unsigned int key2,item* curr){
+  /* Trying to create 2 nodes at once. Not working */
+  item* head;
+  head = malloc(sizeof(item) * 2);   
+  head->key = key1;
+  head->value = 0;
+  head->next->key = key2;
+  head->next->value = 0;
+  head->next->next = curr;
   return head;
 }
 
@@ -48,24 +60,23 @@ static __inline item* uniquePush2(item* head,unsigned int key1,unsigned int key2
   item* iterator = head;
 
   while(iterator){
-    if(key1_found == 0 && iterator->key == key1){
+    if(key1_found == 0 && iterator->key == key1)
       key1_found = 1;
-    }
-    if(key2_found == 0 && iterator->key == key2){
+    if(key2_found == 0 && iterator->key == key2)
       key2_found = 1;
-    }
 
-    if(key1_found + key2_found == 2)
+    if(key1_found && key2_found)
        return head;
+
     iterator = iterator->next;
   }
- 
-  if(key1_found == 0 && key2_found == 0) 
-     return push(key1,push(key2,head));
+
+  if(key1_found == 0 && key2_found == 0 && key1 != key2) 
+     return push1(key1,push1(key2,head));
   else if(key1_found == 0)
-     return push(key1,head);
+     return push1(key1,head);
   else if(key2_found == 0) 
-     return push(key2,head);
+     return push1(key2,head);
 }
 
 static __inline item* uniquePush1(item* head,unsigned int key){
@@ -79,7 +90,7 @@ static __inline item* uniquePush1(item* head,unsigned int key){
     iterator = iterator->next;
   }
  
-  return push(key,head); 
+  return push1(key,head); 
 }
 
 static void dict_free(item* head){
@@ -111,8 +122,7 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   /* setup scoring matrix */
   for(i=0;i<=xy_max;i++){
     if(i <= x && i <= y) {
-	  /* uniquePush2 -still- not working correctly */
-         head = uniquePush2(head,src[i],tgt[1]); 
+         head = uniquePush2(head,src[i],tgt[i]); 
          scores[(i+1) * (y + 2) + 1] = i;
          scores[(i+1) * (y + 2) + 0] = inf;
          scores[1 * (y + 2) + (i + 1)] = i;
