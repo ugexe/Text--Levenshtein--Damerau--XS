@@ -21,11 +21,11 @@ struct dictionary{
 };
 typedef struct dictionary item;
 
-static __inline item* push(unsigned int key,unsigned int value,item* curr){
+static __inline item* push(unsigned int key,item* curr){
   item* head;
   head = malloc(sizeof(item));   
   head->key = key;
-  head->value = value;
+  head->value = 0;
   head->next = curr;
   return head;
 }
@@ -43,9 +43,9 @@ static __inline item* find(item* head,unsigned int key){
 }
 
 static __inline item* uniquePush2(item* head,unsigned int key1,unsigned int key2){
+  unsigned int key1_found = 0;
+  unsigned int key2_found = 0;
   item* iterator = head;
-  int key1_found = 0;
-  int key2_found = 0;
 
   while(iterator){
     if(key1_found == 0 && iterator->key == key1){
@@ -61,11 +61,11 @@ static __inline item* uniquePush2(item* head,unsigned int key1,unsigned int key2
   }
  
   if(key1_found == 0 && key2_found == 0) 
-     return push(key2,0,push(key1,0,head));
+     return push(key1,push(key2,head));
   else if(key1_found == 0)
-     return push(key1,0,head);
+     return push(key1,head);
   else if(key2_found == 0) 
-     return push(key2,0,head);
+     return push(key2,head);
 }
 
 static __inline item* uniquePush1(item* head,unsigned int key){
@@ -79,7 +79,7 @@ static __inline item* uniquePush1(item* head,unsigned int key){
     iterator = iterator->next;
   }
  
-  return push(key,0,head); 
+  return push(key,head); 
 }
 
 static void dict_free(item* head){
@@ -110,26 +110,24 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
 
   /* setup scoring matrix */
   for(i=0;i<=xy_max;i++){
-    if(i <= x) {
-        scores[(i+1) * (y + 2) + 1] = i;
-        scores[(i+1) * (y + 2) + 0] = inf;
-    }
-    if(i <= y) {
-        scores[1 * (y + 2) + (i + 1)] = i;
-        scores[0 * (y + 2) + (i + 1)] = inf;
-    }
-
     if(i <= x && i <= y) {
 	  /* uniquePush2 -still- not working correctly */
-         //head = uniquePush2(head,src[i],tgt[1]); 
-         head = uniquePush1(head,src[i]);
-         head = uniquePush1(head,tgt[i]);
+         head = uniquePush2(head,src[i],tgt[1]); 
+         scores[(i+1) * (y + 2) + 1] = i;
+         scores[(i+1) * (y + 2) + 0] = inf;
+         scores[1 * (y + 2) + (i + 1)] = i;
+         scores[0 * (y + 2) + (i + 1)] = inf;
+
     }
     else if(i <= x) {
          head = uniquePush1(head,src[i]);
+         scores[(i+1) * (y + 2) + 1] = i;
+         scores[(i+1) * (y + 2) + 0] = inf;
     }
     else if(i <= y) {
          head = uniquePush1(head,tgt[i]);
+         scores[1 * (y + 2) + (i + 1)] = i;
+         scores[0 * (y + 2) + (i + 1)] = inf;
     }
   }
  
@@ -188,6 +186,15 @@ PPCODE:
   unsigned int lenSource = av_len(arraySource)+1;
   unsigned int lenTarget = av_len(arrayTarget)+1;
   int retval;
+
+
+  //char *packedSource;
+  //char type = 'U';
+  //packedSource = SvPVX(ST(0));
+  //PUTBACK;
+  //unpackstring(&type, &type+1, packedSource, packedSource + SvCUR(ST(0)), 0);
+  //SPAGAIN;
+ 
 
   if(lenSource > 0 && lenTarget > 0) {
     int matchBool;
