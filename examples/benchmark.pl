@@ -4,7 +4,8 @@ use Text::Levenshtein::Damerau::XS qw/xs_edistance cxs_edistance/;
 use Benchmark qw/:hireswallclock timethese cmpthese/;
 use utf8;
 
-# Benchmarks all have the same results, not sure why
+# csx benchmarks all have the same results, not sure why
+print "\n\n"!!csx benchmark speed not accurate!!\n\n"; 
 
 my $test_count = 1000000;
 

@@ -1,4 +1,4 @@
-Changes
+examples/benchmark.pl
 lib/Text/Levenshtein/Damerau/XS.pm
 LICENSE
 Makefile.PL
@@ -7,6 +7,5 @@ README
 t/00_compile.t
 t/01_imports.t
 t/02_xs_edistance.t
-XS.xs
 xt/cxs_edistance.t
 xt/pod.t
