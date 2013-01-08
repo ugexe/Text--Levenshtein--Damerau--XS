@@ -1,5 +1,10 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+2.0 Tue Jan 08 16:54:40 2013
+	- Refactoring/optimizations
+	- Better memory management
+	- TODO added to docs
+
 1.91 Thur Jan 03 16:16:21 2013
 	- bulk88 C optimizations
 	- variable/function name changes

@@ -5,7 +5,7 @@ require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '1.91';
+$Text::Levenshtein::Damerau::XS::VERSION = '2.0';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
@@ -88,6 +88,14 @@ Wrapper function to take the edit distance between a source and target string us
 
 	print xs_edistance('Neil','Nielx',1);
 	# prints -1
+
+=head1 TODO
+
+=item * Handle very large strings of text. Can be accomplished by reworking the scoring matrix or writing to disk.
+
+=item * Add from_file methods.
+
+=item * Add binary/byte string support.
 
 =head1 SEE ALSO
 

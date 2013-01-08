@@ -8,8 +8,7 @@ pm_to_blib
 .zip$
 ^Makefile$
 MYMETA.*
-.c$
+XS.c$
 .o$
 .bs$
-.s$
 .SKIP$

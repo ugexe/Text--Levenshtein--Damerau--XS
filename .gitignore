@@ -1,6 +1,6 @@
 blib
 *.bs
-*.c
+XS.c
 *.o
 *.def
 dll.base
