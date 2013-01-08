@@ -30,15 +30,18 @@ static __inline item* push1(unsigned int key,item* curr){
   return head;
 }
 
+
 static __inline item* push2(unsigned int key1,unsigned int key2,item* curr){
-  /* Trying to create 2 nodes at once. Not working */
+  /* doesn't work */
   item* head;
-  head = malloc(sizeof(item) * 2);   
+  head = malloc(sizeof(item)*2);
   head->key = key1;
   head->value = 0;
-  head->next->key = key2;
-  head->next->value = 0;
-  head->next->next = curr;
+  head = head+sizeof(item);
+  head->key = key2;
+  head->value = 0;
+  head->next = curr;
+
   return head;
 }
 
@@ -118,35 +121,29 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   unsigned int inf = x + y;
   scores[0] = inf;  
   unsigned int xy_max = MAX(x,y);
-
-  /* setup scoring matrix */
-  for(i=0;i<=xy_max;i++){
-    if(i <= x && i <= y) {
-         head = uniquePush2(head,src[i],tgt[i]); 
-         scores[(i+1) * (y + 2) + 1] = i;
-         scores[(i+1) * (y + 2) + 0] = inf;
-         scores[1 * (y + 2) + (i + 1)] = i;
-         scores[0 * (y + 2) + (i + 1)] = inf;
-
-    }
-    else if(i <= x) {
-         head = uniquePush1(head,src[i]);
-         scores[(i+1) * (y + 2) + 1] = i;
-         scores[(i+1) * (y + 2) + 0] = inf;
-    }
-    else if(i <= y) {
-         head = uniquePush1(head,tgt[i]);
-         scores[1 * (y + 2) + (i + 1)] = i;
-         scores[0 * (y + 2) + (i + 1)] = inf;
-    }
-  }
- 
- 
-  /* work loop */
   unsigned int db,i1,j1;
+  unsigned int jflag = 1;
+
+  /* intialize matrix start values */
+  head = uniquePush2(head,src[0],tgt[0]);
+  scores[1 * (y + 2) + 1] = 0;
+  scores[1 * (y + 2) + 0] = inf;
+  scores[0 * (y + 2) + 1] = inf;
+
+  /* work loop */
   for(i=1;i<=x;i++){ 
+    head = uniquePush1(head,src[i]);
+    scores[(i+1) * (y + 2) + 1] = i;
+    scores[(i+1) * (y + 2) + 0] = inf;
+
     db = 0;
     for(j=1;j<=y;j++){
+      if(jflag) {
+          head = uniquePush1(head,tgt[j]);
+          scores[1 * (y + 2) + (j + 1)] = j;
+          scores[0 * (y + 2) + (j + 1)] = inf;
+      }
+
       i1 = find(head,tgt[j-1])->value;
       j1 = db;
 
@@ -159,6 +156,8 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
 
       scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[(i+1) * (y + 2) + (j + 1)], (scores[i1 * (y + 2) + j1] + i - i1 - 1 + j - j1));
     }
+
+    jflag = 0;
 
     /* We will return -1 here if the */
     /* current score > maxDistance   */
