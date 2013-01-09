@@ -5,7 +5,7 @@ require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '2.0';
+$Text::Levenshtein::Damerau::XS::VERSION = '2.1';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
@@ -42,8 +42,6 @@ Text::Levenshtein::Damerau::XS - XS Damerau Levenshtein edit distance.
 =head1 SYNOPSIS
 
 	use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
-	use warnings;
-	use strict;
 
 	print xs_edistance('Neil','Niel');
 	# prints 1
@@ -58,13 +56,13 @@ Returns the true Damerau Levenshtein edit distance of strings with adjacent tran
 
 Speed improvements over L<Text::Levenshtein::Damerau::PP>:
 
-	# Text::Levenshtein::Damerau::PP
-	timethis 1000000: 699 wallclock secs (697.60 usr +  0.00 sys =
-               697.60 CPU) @ 1433.49/s (n=1000000)
+	# Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
+	timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
+		 380.46 CPU) @ 2628.40/s (n=1000000)
 
-	# Text::Levenshtein::Damerau::XS
-	timethis 1000000: 21 wallclock secs (20.63 usr +  0.00 sys =
-               20.63 CPU) @ 48473.10/s (n=1000000)
+	# Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
+	timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
+		 19.43 CPU) @ 51466.80/s (n=1000000)
 
 =head1 METHODS
 
@@ -86,16 +84,21 @@ Wrapper function to take the edit distance between a source and target string us
 	print xs_edistance('Neil','Niel');
 	# prints 1
 
-	print xs_edistance('Neil','Nielx',1);
+       # Max edit distance of 1
+	print xs_edistance('Neil','Niely',1); # distance is 2
 	# prints -1
 
 =head1 TODO
+
+=over 4
 
 =item * Handle very large strings of text. Can be accomplished by reworking the scoring matrix or writing to disk.
 
 =item * Add from_file methods.
 
 =item * Add binary/byte string support.
+
+=back
 
 =head1 SEE ALSO
 

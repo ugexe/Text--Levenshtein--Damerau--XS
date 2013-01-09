@@ -48,7 +48,6 @@ PPCODE:
     /* Convert Perl array to C array */
     int arrTarget [ lenTarget ];
     int arrSource [ lenSource ];
-    int maxDistance_int = SvIV(maxDistance);
 
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
@@ -68,9 +67,8 @@ PPCODE:
 
     if(matchBool == 1)
       retval = 0;
-    else {
-      retval = distance(arrSource,arrTarget,lenSource,lenTarget, maxDistance_int);
-    }
+    else
+      retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
   }
   else {
     /* handle a blank string */
