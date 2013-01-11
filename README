@@ -3,8 +3,6 @@ NAME
 
 SYNOPSIS
             use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
-            use warnings;
-            use strict;
 
             print xs_edistance('Neil','Niel');
             # prints 1
@@ -20,16 +18,15 @@ DESCRIPTION
 
     Speed improvements over Text::Levenshtein::Damerau::PP:
 
-            # Text::Levenshtein::Damerau::PP
-            timethis 1000000: 699 wallclock secs (697.60 usr +  0.00 sys =
-                   697.60 CPU) @ 1433.49/s (n=1000000)
+            # Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
+            timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
+                     380.46 CPU) @ 2628.40/s (n=1000000)
 
-            # Text::Levenshtein::Damerau::XS
-            timethis 1000000: 21 wallclock secs (20.63 usr +  0.00 sys =
-                   20.63 CPU) @ 48473.10/s (n=1000000)
+            # Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
+            timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
+                     19.43 CPU) @ 51466.80/s (n=1000000)
 
 METHODS
-EXPORTABLE METHODS
   xs_edistance
     Arguments: source string and target string.
 
@@ -46,8 +43,17 @@ EXPORTABLE METHODS
             print xs_edistance('Neil','Niel');
             # prints 1
 
-            print xs_edistance('Neil','Nielx',1);
+           # Max edit distance of 1
+            print xs_edistance('Neil','Niely',1); # distance is 2
             # prints -1
+
+TODO
+    *   Handle very large strings of text. Can be accomplished by reworking
+        the scoring matrix or writing to disk.
+
+    *   Add from_file methods.
+
+    *   Add binary/byte string support.
 
 SEE ALSO
     *   Text::Levenshtein::Damerau
