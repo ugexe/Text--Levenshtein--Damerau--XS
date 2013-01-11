@@ -14,40 +14,37 @@ struct dictionary{
 };
 typedef struct dictionary item;
 
-static __inline item* push(unsigned int key,item* curr){
-  item* head;
-  head = malloc(sizeof(item));   
-  head->key = key;
-  head->value = 0;
-  head->next = curr;
-  return head;
+static __inline item* push(unsigned int key){
+  item* next;
+  next = malloc(sizeof(item));
+  next->key = key;
+  next->value = 0;
+  return next;
 }
 
 
-static __inline item* find(item* head,unsigned int key){
-  item* iterator = head;
+static __inline bool find(item* iterator,unsigned int key){
+  item* last;
   while(iterator){
     if(iterator->key == key){
-      return iterator;
+      return 1;
     }
+    last = iterator;
     iterator = iterator->next;
   }
- 
-  return NULL;
+  iterator = last;
+  return 0;
 }
 
-static __inline item* uniquePush(item* head,unsigned int key){
+static __inline void findOrInsert(item* head,unsigned int key){
   item* iterator = head;
-  int key_found = 0;
-
-  while(iterator){
-    if(iterator->key == key){
-      return head;
+  if(!find(iterator,key)){
+    if(head){
+      iterator->next = push(key,head);
+    }else{
+      head = push(key,head);
     }
-    iterator = iterator->next;
   }
- 
-  return push(key,head); 
 }
 
 static void dict_free(item* head){
@@ -69,7 +66,7 @@ static void dict_free(item* head){
 /* All calculations/work are done here */
 
 static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
-  item *head = NULL;
+  item *head = NULL, *iterator;
   unsigned int xy_max = MAX(x,y);
   unsigned int db,i1,j1,i,j;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
@@ -80,23 +77,25 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   scores[1 * (y + 2) + 0] = score_ceil;
   scores[0 * (y + 2) + 1] = score_ceil;
   scores[1 * (y + 2) + 1] = 0;
-  head = uniquePush(uniquePush(head,src[0]),tgt[0]);
+  findOrInsert(head,src[0]);
+  findOrInsert(head,tgt[0]);
 
   /* work loop */
   for(i=1;i<=x;i++){ 
-    head = uniquePush(head,src[i]);
+    findOrInsert(head,src[i]);
     scores[(i+1) * (y + 2) + 1] = i;
     scores[(i+1) * (y + 2) + 0] = score_ceil;
 
     db = 0;
     for(j=1;j<=y;j++){
       if(i == 1) {
-          head = uniquePush(head,tgt[j]);
+          findOrInsert(head,tgt[j]);
           scores[1 * (y + 2) + (j + 1)] = j;
           scores[0 * (y + 2) + (j + 1)] = score_ceil;
       }
 
-      i1 = find(head,tgt[j-1])->value;
+      iterator = head;
+      i1 = find(iterator,tgt[j-1])->value;
       j1 = db;
 
       if(src[i-1] == tgt[j-1]){
@@ -117,8 +116,8 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
       return -1;
     }
 
-    
-    find(head,src[i-1])->value = i;
+    iterator = head;
+    find(iterator,src[i-1])->value = i;
   }
 
   unsigned int score = scores[(x+1) * (y + 2) + (y + 1)];
