@@ -66,34 +66,19 @@ int bigld(FILE* in1, FILE* in2){
   FILE* scores = tmpfile();
   FILE* dictionary = tmpfile();
   unsigned int max = 0;
-  
+  unsigned int ax, ay;
   /* GET MAX */
   fseek(in1, 0, SEEK_END);
   fseek(in2, 0, SEEK_END);
   max += ftell(in1);
   max += ftell(in2);
+  ax = ftell(in1);
+  ay = ftell(in2);
   fseek(in1, 0, SEEK_SET);
   fseek(in2, 0, SEEK_SET);
 
-  setval(dictionary, 50, 5);
-  setval(dictionary, 51, 10);
-  setval(dictionary, 50, 6);
-  printf("FIFTEE: %d : %d\n", val(dictionary, 50), val(dictionary, 51));
+  printf("%d , %d\n", ax, ay);
 
-  setscore(scores, 2, 2, 5, 15);
-  setscore(scores, 2, 3, 5, 16);
-
-  int x, y;
-  printf("scores:\n\t");
-  for(x = 0; x < 5; x++){ printf("%d\t", x); }
-  printf("\n");
-  for(x = 0; x < 5; x++){
-    for(y = 0; y < 5; y++){
-      if(y == 0){ printf("%d\t", y); }
-      printf("%d\t", score(scores, x, y, 5));
-    }
-    printf("\n");
-  }
 
   fclose(scores);
   fclose(dictionary);
