@@ -1,18 +1,21 @@
 #include <stdio.h>
 
-int setscore(FILE* arr, unsigned int x, unsigned int y, int val){
-
+void setscore(FILE* arr, unsigned int x, unsigned int y, int dimy, int val){
+  int pos = ftell(arr);
+  getscore(arr, x, y, dimy, 0);
+  fwrite(&val, sizeof(int), 1, arr);
+  fseek(arr, pos, SEEK_SET);
 }
 
-int score(FILE* arr, unsigned int x, unsigned int y){ return getscore(arr,x,y,0); }
-int getscore(FILE* arr, unsigned int x, unsigned int y, int reset){
+int score(FILE* arr, unsigned int x, unsigned int y, int dimy){ return getscore(arr,x,y,dimy,1); }
+int getscore(FILE* arr, unsigned int x, unsigned int y, int dimy, int reset){
   int pos = ftell(arr);
   int spos = 0;
-  fseek(arr, x * (y + 2) + y, SEEK_SET);
-  while(x * (y + 2) + y > ftell(arr)){
+  fseek(arr, (x * dimy * sizeof(int)) + (y * sizeof(int)), SEEK_SET);
+  while((x * dimy * sizeof(int)) + (y * sizeof(int)) > ftell(arr)){
     fwrite(&spos, sizeof(int), 1, arr);
   }
-  fseek(arr, -1, SEEK_CUR);
+  fseek(arr, -1*sizeof(int), SEEK_CUR);
   fread(&spos, sizeof(int), 1, arr);
   if(reset){
     fseek(arr, pos, SEEK_SET);
@@ -24,10 +27,10 @@ void setval(FILE* dict, unsigned int key, unsigned int newval){
   int pos = ftell(dict);
   int n = getval(dict,key,0);
   if(n == -1){ //PTR @ END
-    fwrite(&key,sizeof(int),1,dict);
-    fwrite(&newval,sizeof(int),1,dict);
+    fwrite(&key, sizeof(int), 1, dict);
+    fwrite(&newval, sizeof(int), 1, dict);
   }else{ //PTR @ KEY EXISTS
-    fseek(dict,sizeof(int)/sizeof(char),SEEK_CUR);
+    fseek(dict, -1*sizeof(int), SEEK_CUR);
     fwrite(&newval, sizeof(int), 1, dict);
   }
   fseek(dict, pos, SEEK_SET);
@@ -74,8 +77,26 @@ int bigld(FILE* in1, FILE* in2){
 
   setval(dictionary, 50, 5);
   setval(dictionary, 51, 10);
+  setval(dictionary, 50, 6);
   printf("FIFTEE: %d : %d\n", val(dictionary, 50), val(dictionary, 51));
 
+  setscore(scores, 2, 2, 5, 15);
+  setscore(scores, 2, 3, 5, 16);
+
+  int x, y;
+  printf("scores:\n\t");
+  for(x = 0; x < 5; x++){ printf("%d\t", x); }
+  printf("\n");
+  for(x = 0; x < 5; x++){
+    for(y = 0; y < 5; y++){
+      if(y == 0){ printf("%d\t", y); }
+      printf("%d\t", score(scores, x, y, 5));
+    }
+    printf("\n");
+  }
+
+  fclose(scores);
+  fclose(dictionary);
   return 0;
 }
 
