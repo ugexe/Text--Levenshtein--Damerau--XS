@@ -22,6 +22,7 @@ cxs_edistance (arraySource, arrayTarget, maxDistance)
   AV *    arrayTarget
   SV *    maxDistance
 PPCODE:
+  {
   dXSTARG;
   PUSHs(TARG);
   PUTBACK;
@@ -47,9 +48,10 @@ PPCODE:
       matchBool = 0;
     else matchBool = 1;
 
+    {
     /* Convert Perl array to C array */
-    int arrTarget [ lenTarget ];
-    int arrSource [ lenSource ];
+    int * arrTarget = alloca(sizeof(int) * lenTarget );
+    int * arrSource = alloca(sizeof(int) * lenSource );
 
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
@@ -71,6 +73,7 @@ PPCODE:
       retval = 0;
     else
       retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
+    }
   }
   else {
     /* handle a blank string */
@@ -78,4 +81,5 @@ PPCODE:
   }
     sv_setiv_mg(TARG, retval);
     return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
+  }
   }
