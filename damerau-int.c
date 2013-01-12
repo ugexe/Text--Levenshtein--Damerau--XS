@@ -11,8 +11,15 @@ struct dictionary{
   unsigned int key;
   unsigned int value;
   struct dictionary* next;
+  struct dictionary* prev;
 };
 typedef struct dictionary item;
+
+struct dictionary_list{
+  struct dictionary* first;
+  struct dictionary* last;
+};
+typedef struct dictionary_list item_list;
 
 static __inline item* push(unsigned int key,item* curr){
   item* head;

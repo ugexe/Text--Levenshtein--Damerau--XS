@@ -34,9 +34,9 @@ PPCODE:
 
   //char *packedSource;
   //char type = 'U';
-  //packedSource = SvPVX(ST(0));
+  //packedSource = SvPVX(arraySource);
   //PUTBACK;
-  //unpackstring(&type, &type+1, packedSource, packedSource + SvCUR(ST(0)), 0);
+  //unpackstring(type, type+1, packedSource, packedSource + SvCUR(arraySource), 0);
   //SPAGAIN;
  
 

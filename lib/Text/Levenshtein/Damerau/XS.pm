@@ -5,7 +5,7 @@ require Exporter;
 *import = \&Exporter::import;
 require DynaLoader;
 
-$Text::Levenshtein::Damerau::XS::VERSION = '2.1';
+$Text::Levenshtein::Damerau::XS::VERSION = '2.3';
 
 DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
 
@@ -18,15 +18,7 @@ DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau
 sub dl_load_flags {0} # Prevent DynaLoader from complaining and croaking
 
 sub xs_edistance {
-    # Wrapper for XS cxs_edistance function
-    my $str1 = shift;
-    my $str2 = shift;
-    my $maxd = shift || 0;
-
-    my @arr1 = unpack 'U*', $str1;
-    my @arr2 = unpack 'U*', $str2;
-     
-    return cxs_edistance( \@arr1, \@arr2, $maxd );
+    return cxs_edistance( [unpack('U*', shift)], [unpack('U*',shift)], shift || 0);
 }
 
 
@@ -50,7 +42,9 @@ Text::Levenshtein::Damerau::XS - XS Damerau Levenshtein edit distance.
 
 Returns the true Damerau Levenshtein edit distance of strings with adjacent transpositions. XS implementation (requires a C compiler). Works correctly with utf8.
 
+	use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
 	use utf8;
+
 	xs_edistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
 	# prints 1
 

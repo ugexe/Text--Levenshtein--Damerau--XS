@@ -1,5 +1,12 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+2.3 ?
+	- bulk88 optimizations
+	- Removed lexicals from XS.pm
+
+2.2 Thu Jan 10 23:52:34 2013
+	- NO_XSLOCKS to let malloc work correctly
+
 2.1 Tue Jan 08 20:18:02 2013
 	- Fixed pod error
 	- Updated docs
