@@ -128,8 +128,10 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
     find(head,src[i-1])->value = i;
   }
 
+  {
   unsigned int score = scores[(x+1) * (y + 2) + (y + 1)];
   dict_free(head);
   free(scores);
   return score;
+  }
 }
