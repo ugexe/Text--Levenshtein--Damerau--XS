@@ -1,3 +1,5 @@
+#define MIN(a,b) (((a)<(b))?(a):(b))
+
 #include <stdio.h>
 
 void setscore(FILE* arr, unsigned int x, unsigned int y, int dimy, int val){
@@ -66,19 +68,51 @@ int bigld(FILE* in1, FILE* in2){
   FILE* scores = tmpfile();
   FILE* dictionary = tmpfile();
   unsigned int max = 0;
-  unsigned int ax, ay;
+  unsigned int ax, ay, r1[2], r2[2], db, i, j, i1, j1;
   /* GET MAX */
   fseek(in1, 0, SEEK_END);
   fseek(in2, 0, SEEK_END);
-  max += ftell(in1);
-  max += ftell(in2);
-  ax = ftell(in1);
-  ay = ftell(in2);
+  max += (ftell(in1) + ftell(in2)) / sizeof(int);
+  ax = (ftell(in1) / sizeof(int)) + 2;
+  ay = (ftell(in2) / sizeof(int)) + 2;
+
+  setscore(scores, 0, 0, ay, max);
+  
+  i = 1;
   fseek(in1, 0, SEEK_SET);
-  fseek(in2, 0, SEEK_SET);
+  while(fread(r1, sizeof(int), 1, in1) > 0){
+    setscore(scores, i+1, 1, ay, i);
+    setscore(scores, i+1, 0, ay, max);
+    db = 0;
 
-  printf("%d , %d\n", ax, ay);
+    j = 1;
+    fseek(in2, 0, SEEK_SET);
+    while(fread(r2, sizeof(int), 1, in2) > 0){
+      if(i == 1){
+        setscore(scores, 1, j+1, ay, j);
+        setscore(scores, 0, j+1, ay, max);
+      }
+      printf("(r1:%d,r2:%d)\n",r1[0],r2[0]);
+      printf("val\n");
+      i1 = val(dictionary, r2[0]);
+      j1 = db;
 
+      if(r1[0] == r2[0]){
+        printf("equal, setscore : %d,%d,%d,%d\n",i+1,j+1,ay, score(scores,i,j,ay));
+        setscore(scores, i + 1, j + 1, ay, score(scores, i, j, ay));
+        printf("done");
+        db = j;
+      }else{
+        printf("unequal, setscore\n");
+        setscore(scores, i + 1, j + 1, ay, MIN(score(scores, i, j, ay), MIN(score(scores, i+1, j, ay), score(scores, i, j+1, ay))));
+      }
+      setscore(scores, i + 1, j + 1, ay, MIN(score(scores, i+1, j+1, ay) , score(scores, i1, j1, ay) + (i - i1 - 1) + (j - j1 - 1) + 1));
+      j++;
+    }
+    setval(dictionary, r1[0], i);
+    i++;
+  }
+  printf("D: %d\n", score(scores, ax - 1, ay - 1, ay));
 
   fclose(scores);
   fclose(dictionary);
