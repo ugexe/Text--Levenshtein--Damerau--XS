@@ -3,18 +3,22 @@ use 5.008_008;
 
 require Exporter;
 *import = \&Exporter::import;
-require DynaLoader;
 
 $Text::Levenshtein::Damerau::XS::VERSION = '2.3';
+@Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance/;
 
-DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau::XS::VERSION;
+eval {
+    require XSLoader;
+    XSLoader::load(__PACKAGE__, $Text::Levenshtein::Damerau::XS::VERSION);
+    1;
+} or do {
+    require DynaLoader;
+    DynaLoader::bootstrap(__PACKAGE__, $Text::Levenshtein::Damerau::XS::VERSION);
+    sub dl_load_flags {0} # Prevent DynaLoader from complaining and croaking
+};
 
-@Text::Levenshtein::Damerau::XS::EXPORT = ();
-@Text::Levenshtein::Damerau::XS::EXPORT_OK = qw(
-	xs_edistance
-    );
 
-sub dl_load_flags {0} # Prevent DynaLoader from complaining and croaking
+
 
 sub xs_edistance {
     # shift shift shift is faster than $_[0] $_[1] $_[2] 

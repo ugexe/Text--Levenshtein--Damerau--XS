@@ -1,6 +1,9 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
-2.3 Sun Jan 13 20:00:09
+2.4 ?
+	- use XSLoader when possible
+
+2.3 Sun Jan 13 20:00:09 2013
 	- bulk88 optimizations
 	- Removed lexicals from XS.pm
 	- csx_edistance no longer exportable
