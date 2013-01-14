@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More tests => 1;
-use Text::Levenshtein::Damerau::XS qw/cxs_edistance/;
+use Text::Levenshtein::Damerau::XS;
 
 my @a;
 $a[48] = 1;
@@ -14,5 +14,5 @@ $b[49] = 1;
 $b[50] = 1;
 
 warn("\n\nBelow Uninit warnings are intentional\n\n");
-is( cxs_edistance(\@a,\@b,0), 1, 'test csx_edistance NULL bug');
+is( Text::Levenshtein::Damerau::XS::cxs_edistance(\@a,\@b,0), 1, 'test csx_edistance NULL bug');
 warn("\n\nAbove Uninit warnings were intentional\n\n");

@@ -11,15 +11,9 @@ struct dictionary{
   unsigned int key;
   unsigned int value;
   struct dictionary* next;
-  struct dictionary* prev;
 };
 typedef struct dictionary item;
 
-struct dictionary_list{
-  struct dictionary* first;
-  struct dictionary* last;
-};
-typedef struct dictionary_list item_list;
 
 static __inline item* push(unsigned int key,item* curr){
   item* head;
@@ -45,7 +39,6 @@ static __inline item* find(item* head,unsigned int key){
 
 static __inline item* uniquePush(item* head,unsigned int key){
   item* iterator = head;
-  int key_found = 0;
 
   while(iterator){
     if(iterator->key == key){

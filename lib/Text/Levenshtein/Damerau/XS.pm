@@ -11,17 +11,15 @@ DynaLoader::bootstrap Text::Levenshtein::Damerau::XS $Text::Levenshtein::Damerau
 
 @Text::Levenshtein::Damerau::XS::EXPORT = ();
 @Text::Levenshtein::Damerau::XS::EXPORT_OK = qw(
-	cxs_edistance 
 	xs_edistance
     );
 
 sub dl_load_flags {0} # Prevent DynaLoader from complaining and croaking
 
 sub xs_edistance {
-    return cxs_edistance( [unpack('U*', shift)], [unpack('U*',shift)], shift || 0);
+    # shift shift shift is faster than $_[0] $_[1] $_[2] 
+    return Text::Levenshtein::Damerau::XS::cxs_edistance( [unpack('U*', shift)], [unpack('U*',shift)], shift || 0);
 }
-
-
 
 1;
 

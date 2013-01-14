@@ -1,8 +1,10 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
-2.3 ?
+2.3 Sun Jan 13 20:00:09
 	- bulk88 optimizations
 	- Removed lexicals from XS.pm
+	- csx_edistance no longer exportable
+	- C89; compiles under MSVC
 
 2.2 Thu Jan 10 23:52:34 2013
 	- NO_XSLOCKS to let malloc work correctly
