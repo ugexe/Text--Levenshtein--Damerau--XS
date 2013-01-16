@@ -1,7 +1,6 @@
 /* ugexe@cpan.org (Nick Logan)    */
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
-#define MAX(a,b) (((a)>(b))?(a):(b))
 
 
 /* Our unsorted dictionary linked list.   */
@@ -70,8 +69,7 @@ static void dict_free(item* head){
 
 static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
   item *head = NULL;
-  unsigned int xy_max = MAX(x,y);
-  unsigned int swapCount,targetCharCount,i,j,swapScore;
+  unsigned int swapCount,swapScore,targetCharCount,i,j;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
   unsigned int score_ceil = x + y;
  
@@ -82,7 +80,9 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   scores[1 * (y + 2) + 1] = 0;
   head = uniquePush(uniquePush(head,src[0]),tgt[0]);
 
-  /* work loop */
+  /* work loops    */
+  /* i = src index */
+  /* j = tgt index */
   for(i=1;i<=x;i++){ 
     head = uniquePush(head,src[i]);
     scores[(i+1) * (y + 2) + 1] = i;

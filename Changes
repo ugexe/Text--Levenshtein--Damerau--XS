@@ -1,7 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
-2.4 ?
+2.4  Wed Jan 16 14:52:44 2013
 	- use XSLoader when possible
+	- slight reordering of operations
 
 2.3 Sun Jan 13 20:00:09 2013
 	- bulk88 optimizations
