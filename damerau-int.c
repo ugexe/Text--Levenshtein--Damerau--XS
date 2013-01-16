@@ -71,10 +71,10 @@ static void dict_free(item* head){
 static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
   item *head = NULL;
   unsigned int xy_max = MAX(x,y);
-  unsigned int swapCount,targetCharCount,prevSwapCount,i,j;
+  unsigned int swapCount,targetCharCount,i,j,swapScore;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
   unsigned int score_ceil = x + y;
-
+ 
   /* intialize matrix start values */
   scores[0] = score_ceil;  
   scores[1 * (y + 2) + 0] = score_ceil;
@@ -97,16 +97,14 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
       }
 
       targetCharCount = find(head,tgt[j-1])->value;
-      prevSwapCount = swapCount;
+      swapScore = scores[targetCharCount * (y + 2) + swapCount] + i - targetCharCount - 1 + j - swapCount;
 
       if(src[i-1] == tgt[j-1]){
-        scores[(i+1) * (y + 2) + (j + 1)] = scores[i * (y + 2) + j];
         swapCount = j;
+        scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
       }else{ 
-        scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], MIN(scores[(i+1) * (y + 2) + j], scores[i * (y + 2) + (j + 1)])) + 1;
+        scores[(i+1) * (y + 2) + (j + 1)] = MIN(swapScore,(MIN(scores[i * (y + 2) + j], MIN(scores[(i+1) * (y + 2) + j], scores[i * (y + 2) + (j + 1)])) + 1));
       } 
-
-      scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[(i+1) * (y + 2) + (j + 1)], (scores[targetCharCount * (y + 2) + prevSwapCount] + i - targetCharCount - 1 + j - prevSwapCount));
     }
 
     /* We will return -1 here if the */

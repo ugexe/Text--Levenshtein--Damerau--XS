@@ -7,10 +7,10 @@
 
 #include "damerau-int.c"
 
-/* use the system malloc and free */
+/* use the system malloc, free, and alloca */
 #undef malloc
 #undef free
-
+#undef alloca
 
 MODULE = Text::Levenshtein::Damerau::XS    PACKAGE = Text::Levenshtein::Damerau::XS
 
@@ -63,7 +63,7 @@ PPCODE:
           arrTarget[ i ] = (int)SvIV((SV *)elem2);
 	
           /* checks for match */
-	   if(i < lenSource)
+	   if(matchBool && i < lenSource)
             if(arrSource[i] != arrTarget[i])
               matchBool = 0;
       }
@@ -71,7 +71,7 @@ PPCODE:
 
     if(matchBool == 1)
       retval = 0;
-    else
+    else 
       retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
     }
   }
