@@ -99,11 +99,11 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
       targetCharCount = find(head,tgt[j-1])->value;
       swapScore = scores[targetCharCount * (y + 2) + swapCount] + i - targetCharCount - 1 + j - swapCount;
 
-      if(src[i-1] == tgt[j-1]){
+      if(src[i-1] != tgt[j-1]){      
+        scores[(i+1) * (y + 2) + (j + 1)] = MIN(swapScore,(MIN(scores[i * (y + 2) + j], MIN(scores[(i+1) * (y + 2) + j], scores[i * (y + 2) + (j + 1)])) + 1));
+      }else{ 
         swapCount = j;
         scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
-      }else{ 
-        scores[(i+1) * (y + 2) + (j + 1)] = MIN(swapScore,(MIN(scores[i * (y + 2) + j], MIN(scores[(i+1) * (y + 2) + j], scores[i * (y + 2) + (j + 1)])) + 1));
       } 
     }
 
