@@ -104,37 +104,47 @@ PPCODE:
   int retval;
   U8 * strTargetbuf = SvPVutf8(stringTarget,lenTarget);
   U8 * strSourcebuf = SvPVutf8(stringSource,lenSource );
-  U8 * strTarget = alloca(sizeof(U8) * lenTarget );
-  U8 * strSource = alloca(sizeof(U8) * lenSource );
+  UV * strTarget;
+  UV * strSource;
 
-    if(lenSource > 0 && lenTarget > 0) {
-      int matchBool;
-      unsigned int srctgt_max = MAX(lenSource,lenTarget);
-      if(lenSource != lenTarget) 
-        matchBool = 0;
-      else matchBool = 1;
+  if(!SvUTF8(stringSource)) {
+    stringSource = sv_mortalcopy(stringSource);
+    sv_utf8_upgrade(stringSource);
+  }
+  if(!SvUTF8(stringTarget)) {
+    stringTarget = sv_mortalcopy(stringTarget);
+    sv_utf8_upgrade(stringTarget);
+  }
 
-    {
+  strTarget = alloca(sizeof(UV) * lenTarget );
+  strSource = alloca(sizeof(UV) * lenSource );
+
+  if(lenSource > 0 && lenTarget > 0) {
+    int matchBool;
+    unsigned int srctgt_max = MAX(lenSource,lenTarget);
+    if(lenSource != lenTarget) 
+      matchBool = 0;
+    else matchBool = 1;
 
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
           STRLEN s_len;
-          UV s_ch = utf8n_to_uvchr(strSourcebuf, lenSource, &s_len, 0);
+          UV s_ch = utf8n_to_uvuni(strSourcebuf, lenSource, &s_len, 0);
           strSourcebuf += s_len;
           lenSource -= s_len;
 
-          strSource[ i ] = (U8)s_ch;
+          strSource[ i ] = s_ch;
       }
       if(i < lenTarget) {
           STRLEN t_len;
-          UV t_ch = utf8n_to_uvchr(strTargetbuf, lenTarget, &t_len, 0);
+          UV t_ch = utf8n_to_uvuni(strTargetbuf, lenTarget, &t_len, 0);
           strTargetbuf += t_len;
           lenTarget -= t_len;
 
-          strTarget[ i ] = (U8)t_ch;
+          strTarget[ i ] = t_ch;
 	
           /* checks for match */
-	   if(matchBool && i < lenSource)
+          if(matchBool && i < lenSource)
             if(strSource[i] != strTarget[i])
               matchBool = 0;
       }
@@ -143,8 +153,7 @@ PPCODE:
     if(matchBool == 1)
       retval = 0;
     else 
-        retval = distance2(strSource,strTarget,lenSource,lenTarget,SvIV(maxDistance));
-    }
+      retval = distance2(strSource,strTarget,lenSource,lenTarget,SvIV(maxDistance));
   }
   else {
     /* handle a blank string */
