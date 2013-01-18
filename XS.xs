@@ -3,7 +3,9 @@
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
+
 #include "damerau-int.c"
+#include "damerau-char.c"
 
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
@@ -86,9 +88,9 @@ PPCODE:
 
 
 void
-cxs_edistance2 (arraySource, arrayTarget, maxDistance)
-  SV *    arraySource
-  SV *    arrayTarget
+cxs_edistance2 (stringSource, stringTarget, maxDistance)
+  SV *    stringSource
+  SV *    stringTarget
   SV *    maxDistance
 PPCODE:
   {
@@ -100,11 +102,10 @@ PPCODE:
   STRLEN lenSource;
   STRLEN lenTarget;
   int retval;
-  int * arrTarget = alloca(sizeof(unsigned int) * lenTarget );
-  int * arrSource = alloca(sizeof(unsigned int) * lenSource );
-
-  U8 * arrTargetbuf = SvPVutf8(arrayTarget,lenTarget);
-  U8 * arrSourcebuf = SvPVutf8(arraySource, lenSource );
+  U8 * strTargetbuf = SvPVutf8(stringTarget,lenTarget);
+  U8 * strSourcebuf = SvPVutf8(stringSource,lenSource );
+  U8 * strTarget = alloca(sizeof(U8) * lenTarget );
+  U8 * strSource = alloca(sizeof(U8) * lenSource );
 
     if(lenSource > 0 && lenTarget > 0) {
       int matchBool;
@@ -118,23 +119,23 @@ PPCODE:
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
           STRLEN s_len;
-          UV s_ch = utf8n_to_uvchr(arrSourcebuf, lenSource, &s_len, 0);
-          arrSourcebuf += s_len;
+          UV s_ch = utf8n_to_uvchr(strSourcebuf, lenSource, &s_len, 0);
+          strSourcebuf += s_len;
           lenSource -= s_len;
 
-          arrSource[ i ] = (unsigned int)s_ch;
+          strSource[ i ] = (U8)s_ch;
       }
       if(i < lenTarget) {
           STRLEN t_len;
-          UV t_ch = utf8n_to_uvchr(arrTargetbuf, lenTarget, &t_len, 0);
-          arrTargetbuf += t_len;
+          UV t_ch = utf8n_to_uvchr(strTargetbuf, lenTarget, &t_len, 0);
+          strTargetbuf += t_len;
           lenTarget -= t_len;
 
-          arrTarget[ i ] = (unsigned int)t_ch;
+          strTarget[ i ] = (U8)t_ch;
 	
           /* checks for match */
 	   if(matchBool && i < lenSource)
-            if(arrSource[i] != arrTarget[i])
+            if(strSource[i] != strTarget[i])
               matchBool = 0;
       }
     }
@@ -142,7 +143,7 @@ PPCODE:
     if(matchBool == 1)
       retval = 0;
     else 
-      retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
+        retval = distance2(strSource,strTarget,lenSource,lenTarget,SvIV(maxDistance));
     }
   }
   else {

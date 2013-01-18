@@ -1,4 +1,5 @@
 Changes
+damerau-char.c
 damerau-int.c
 examples/benchmark.pl
 examples/fuzzy_name_search.pl
@@ -12,4 +13,5 @@ t/01_imports.t
 t/02_xs_edistance.t
 XS.xs
 xt/cxs_edistance.t
+xt/cxs_edistance2.t
 xt/pod.t
