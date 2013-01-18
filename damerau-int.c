@@ -2,7 +2,6 @@
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 
-
 /* Our unsorted dictionary linked list.   */
 /* Note we use character ints, not chars. */
 

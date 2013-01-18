@@ -2,10 +2,10 @@ package Text::Levenshtein::Damerau::XS;
 use 5.008_008;
 
 require Exporter;
-*import = \&Exporter::import;
-
-$Text::Levenshtein::Damerau::XS::VERSION = '2.3';
+ 
+$Text::Levenshtein::Damerau::XS::VERSION = '2.6';
 @Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance/;
+@Text::Levenshtein::Damerau::XS::ISA = qw/Exporter/;
 
 eval {
     require XSLoader;

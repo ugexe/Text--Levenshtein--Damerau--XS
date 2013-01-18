@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+2.5  Thu Jan 17 16:19:20 2013
+	- Fixed accidental removal of MAX macro last release
+
 2.4  Wed Jan 16 14:52:44 2013
 	- use XSLoader when possible
 	- slight reordering of operations

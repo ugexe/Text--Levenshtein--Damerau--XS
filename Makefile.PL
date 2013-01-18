@@ -11,7 +11,7 @@ WriteMakefile (
     NAME => 'Text::Levenshtein::Damerau::XS',
     VERSION_FROM => $pm,
     ABSTRACT_FROM => $pm,
-    AUTHOR => 'Nick Logan <ug@skunkds.org>',
+    AUTHOR => 'Nick Logan <ugexe@cpan.org>',
     LICENSE => 'perl',
     MIN_PERL_VERSION => '5.008008',
     PREREQ_PM => {
