@@ -102,8 +102,9 @@ PPCODE:
   STRLEN lenSource;
   STRLEN lenTarget;
   int retval;
-  U8 * strTargetbuf = SvPVutf8(stringTarget,lenTarget);
-  U8 * strSourcebuf = SvPVutf8(stringSource,lenSource );
+
+  U8 * strTargetbuf;
+  U8 * strSourcebuf;
   UV * strTarget;
   UV * strSource;
 
@@ -116,6 +117,8 @@ PPCODE:
     sv_utf8_upgrade(stringTarget);
   }
 
+  strTargetbuf = SvPVutf8(stringTarget,lenTarget);
+  strSourcebuf = SvPVutf8(stringSource,lenSource );
   strTarget = alloca(sizeof(UV) * lenTarget );
   strSource = alloca(sizeof(UV) * lenSource );
 
