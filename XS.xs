@@ -28,20 +28,11 @@ PPCODE:
   PUSHs(TARG);
   PUTBACK;
   {
-  unsigned int i,j;
+  unsigned int i;
   unsigned int lenSource = av_len(arraySource)+1;
   unsigned int lenTarget = av_len(arrayTarget)+1;
   int retval;
-
-
-  //char *packedSource;
-  //char type = 'U';
-  //packedSource = SvPVX(arraySource);
-  //PUTBACK;
-  //unpackstring(type, type+1, packedSource, packedSource + SvCUR(arraySource), 0);
-  //SPAGAIN;
  
-
   if(lenSource > 0 && lenTarget > 0) {
     int matchBool;
     unsigned int srctgt_max = MAX(lenSource,lenTarget);
@@ -51,8 +42,8 @@ PPCODE:
 
     {
     /* Convert Perl array to C array */
-    int * arrTarget = alloca(sizeof(int) * lenTarget );
-    int * arrSource = alloca(sizeof(int) * lenSource );
+    unsigned int * arrTarget = malloc(sizeof(int) * lenTarget );
+    unsigned int * arrSource = malloc(sizeof(int) * lenSource );
 
     for (i=0; i < srctgt_max; i++) {
       if(i < lenSource) {
@@ -156,13 +147,13 @@ PPCODE:
     if(matchBool == 1)
       retval = 0;
     else 
-      retval = distance2(strSource,strTarget,lenSource,lenTarget,SvIV(maxDistance));
+      retval = lenTarget; //distance2(strSource,strTarget,lenSource,lenTarget,SvIV(maxDistance));
   }
   else {
     /* handle a blank string */
     retval = (lenSource>lenTarget)?lenSource:lenTarget;
   }
-    sv_setiv_mg(TARG, retval);
-    return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
+  sv_setiv_mg(TARG, retval);
+  return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
   }
   }

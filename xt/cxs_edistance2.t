@@ -2,8 +2,8 @@ use strict;
 use warnings;
 use Test::More tests => 15;
 use Text::Levenshtein::Damerau::XS;
-#use Encode qw/encode_utf8/;
-#print Text::Levenshtein::Damerau::XS::cxs_edistance2(encode_utf8("x"),encode_utf8("fuor"),0) . "\n"; #should = 4
+use Encode qw/encode_utf8/;
+print Text::Levenshtein::Damerau::XS::cxs_edistance2(encode_utf8("x"),encode_utf8("fuor"),0) . "\n"; #should = 4
 print Text::Levenshtein::Damerau::XS::cxs_edistance2("x","fuor",0) . "\n"; #should = 4
 die;
 
