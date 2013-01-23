@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+2.7  Wed Jan 23 10:52:38 2013
+	- Fixed memory leak from alloca->malloc switch
+
 2.6  Sat Jan 19 12:09:57 2013
 	- Changed alloca to malloc for source/target strings
 

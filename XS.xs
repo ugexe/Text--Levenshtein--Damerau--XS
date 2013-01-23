@@ -65,6 +65,10 @@ PPCODE:
       retval = 0;
     else 
       retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
+
+    free(arrSource);
+    free(arrTarget);
+    free(scores);
     }
   }
   else {
