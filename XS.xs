@@ -68,7 +68,6 @@ PPCODE:
 
     free(arrSource);
     free(arrTarget);
-    free(scores);
     }
   }
   else {
