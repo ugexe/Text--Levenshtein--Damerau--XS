@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+2.8  Fri Jan 25 10:41:04 2013
+	- Removed unused function causing problems on certain windows builds.
+
 2.7  Wed Jan 23 10:52:38 2013
 	- Fixed memory leak from alloca->malloc switch
 
