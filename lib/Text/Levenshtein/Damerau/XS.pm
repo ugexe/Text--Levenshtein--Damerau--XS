@@ -1,9 +1,10 @@
 package Text::Levenshtein::Damerau::XS;
+use strict;
 use 5.008_008;
 
 require Exporter;
  
-$Text::Levenshtein::Damerau::XS::VERSION = '2.8';
+$Text::Levenshtein::Damerau::XS::VERSION = '2.9';
 @Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance/;
 @Text::Levenshtein::Damerau::XS::ISA = qw/Exporter/;
 
@@ -114,7 +115,7 @@ L<https://rt.cpan.org/Public/Dist/Display.html?Name=Text-Levenshtein-Damerau-XS>
 
 =head1 AUTHOR
 
-Nick Logan <F<ug@skunkds.com>>
+Nick Logan <F<ugexe@cpan.org>>
 
 =head1 LICENSE AND COPYRIGHT
 

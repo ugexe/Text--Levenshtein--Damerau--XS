@@ -1,5 +1,4 @@
 Changes
-damerau-char.c
 damerau-int.c
 examples/benchmark.pl
 examples/fuzzy_name_search.pl

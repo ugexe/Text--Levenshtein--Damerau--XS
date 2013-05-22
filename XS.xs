@@ -5,7 +5,6 @@
 #include "XSUB.h"
 
 #include "damerau-int.c"
-#include "damerau-char.c"
 
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
@@ -53,9 +52,9 @@ PPCODE:
       if(i < lenTarget) {
           SV* elem2 = sv_2mortal(av_shift(arrayTarget));
           arrTarget[ i ] = (int)SvIV((SV *)elem2);
-	
+  
           /* checks for match */
-	   if(matchBool && i < lenSource)
+     if(matchBool && i < lenSource)
             if(arrSource[i] != arrTarget[i])
               matchBool = 0;
       }
@@ -63,7 +62,7 @@ PPCODE:
 
     if(matchBool == 1)
       retval = 0;
-    else 
+    else  
       retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
 
     free(arrSource);
@@ -78,4 +77,3 @@ PPCODE:
     return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
   }
   }
-

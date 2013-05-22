@@ -1,5 +1,8 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+2.9  Wed May 22 14:39:31 2013
+	- Hacked in fix for maxDistance, needs to be redone optimally 
+
 2.8  Fri Jan 25 10:41:04 2013
 	- Removed unused function causing problems on certain windows builds.
 

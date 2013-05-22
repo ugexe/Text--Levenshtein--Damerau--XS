@@ -86,8 +86,8 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
     head = uniquePush(head,src[i]);
     scores[(i+1) * (y + 2) + 1] = i;
     scores[(i+1) * (y + 2) + 0] = score_ceil;
-
     swapCount = 0;
+
     for(j=1;j<=y;j++){
       if(i == 1) {
           head = uniquePush(head,tgt[j]);
@@ -103,18 +103,16 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
       }else{ 
         swapCount = j;
         scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
-      } 
+      }
     }
 
-    /* We will return -1 here if the */
-    /* current score > maxDistance   */
-    if(maxDistance != 0 && maxDistance < scores[(i+1) * (y + 2) + (y+1)]) {
-      dict_free(head);
-      free(scores);
-      return -1;
-    }
 
-    
+    //if(maxDistance != 0 && maxDistance < scores[(i+1) * (y + 2) + (y + 1)]) {
+    //  dict_free(head);
+    //  free(scores);
+    //  return -1;
+   // }
+
     find(head,src[i-1])->value = i;
   }
 
@@ -122,6 +120,6 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   unsigned int score = scores[(x+1) * (y + 2) + (y + 1)];
   dict_free(head);
   free(scores);
-  return score;
+  return (maxDistance !=0 && score>maxDistance)?-1:score;
   }
 }

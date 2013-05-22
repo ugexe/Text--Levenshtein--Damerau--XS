@@ -21,6 +21,12 @@ WriteMakefile (
             repository => $repo,
             bugtracker => "$bugs",
         },
+        provides => {
+            'Text::Levenshtein::Damerau::XS' => {
+                file    => 'lib/Text/Levenshtein/Damerau/XS.pm',
+                version => '2.9',
+            },
+        },
     },
     depend => { '$(FIRST_MAKEFILE)' => '$(VERSION_FROM)' },
 );
