@@ -16,17 +16,12 @@ MODULE = Text::Levenshtein::Damerau::XS    PACKAGE = Text::Levenshtein::Damerau:
 
 PROTOTYPES: ENABLE
 
-void
+int
 cxs_edistance (arraySource, arrayTarget, maxDistance)
   AV *    arraySource
   AV *    arrayTarget
   SV *    maxDistance
-PPCODE:
-  {
-  dXSTARG;
-  PUSHs(TARG);
-  PUTBACK;
-  {
+CODE:
   unsigned int i;
   unsigned int lenSource = av_len(arraySource)+1;
   unsigned int lenTarget = av_len(arrayTarget)+1;
@@ -54,16 +49,16 @@ PPCODE:
           arrTarget[ i ] = (int)SvIV((SV *)elem2);
   
           /* checks for match */
-     if(matchBool && i < lenSource)
+          if(matchBool && i < lenSource)
             if(arrSource[i] != arrTarget[i])
               matchBool = 0;
       }
     }
 
     if(matchBool == 1)
-      retval = 0;
+      RETVAL = 0;
     else  
-      retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
+      RETVAL = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
 
     free(arrSource);
     free(arrTarget);
@@ -71,9 +66,7 @@ PPCODE:
   }
   else {
     /* handle a blank string */
-    retval = (lenSource>lenTarget)?lenSource:lenTarget;
+    RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
   }
-    sv_setiv_mg(TARG, retval);
-    return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
-  }
-  }
+OUTPUT:
+  RETVAL

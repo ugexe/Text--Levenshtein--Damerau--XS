@@ -1,5 +1,9 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+3.0 Fri Jun 22:29:17
+	- maxDistance incorrect results patched with non-optimal solution
+    - some XS API changes to try and pass weird OpenBSD failures
+    
 2.9  Wed May 22 14:39:31 2013
 	- Hacked in fix for maxDistance, needs to be redone optimally 
 

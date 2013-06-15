@@ -2,7 +2,8 @@ use strict;
 use warnings;
 use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
 
-my @names = ( 'Angela Smarts',
+my @names = ( 
+		'Angela Smarts',
 		'Angela Sharron',
 		'Andrew North',
 		'Andy North',
