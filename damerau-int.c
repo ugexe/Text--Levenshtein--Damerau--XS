@@ -1,6 +1,7 @@
 /* ugexe@cpan.org (Nick Logan)    */
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
 
 /* Our unsorted dictionary linked list.   */
 /* Note we use character ints, not chars. */
@@ -71,7 +72,9 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   unsigned int swapCount,swapScore,targetCharCount,i,j;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
   unsigned int score_ceil = x + y;
- 
+  unsigned int diff = MAX(x , y) - MIN(x, y);
+  unsigned int mdx = (maxDistance == 0) ? MAX(x,y) : maxDistance;
+
   /* intialize matrix start values */
   scores[0] = score_ceil;  
   scores[1 * (y + 2) + 0] = score_ceil;
@@ -104,14 +107,21 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
         swapCount = j;
         scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
       }
+
+      //warn("i:%d j:%d mdx:%d maxDistance:%d y:%d",i,j,mdx,maxDistance,y);
+      if( i == j ) {
+        if(mdx < scores[(i+1) * (y + 2) + (j + 1)]) {
+          dict_free(head);
+          free(scores);
+          return -20;
+        }
+      }
+      else if( j >= x && j > i && mdx < (scores[(i+1) * (y + 2) + (j + 1)] + (MAX(diff,j) - MIN(diff,j) - 1)) ) {
+          /* we can look at the length difference along with the current distance to determine a minimum distance */
+          return -30;
+      }
+
     }
-
-
-    //if(maxDistance != 0 && maxDistance < scores[(i+1) * (y + 2) + (y + 1)]) {
-    //  dict_free(head);
-    //  free(scores);
-    //  return -1;
-    //}
 
     find(head,src[i-1])->value = i;
   }

@@ -1,37 +1,51 @@
-use 5.008_008;
+use 5.008;
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use ExtUtils::MakeMaker;
 
 my $pm =   'lib/Text/Levenshtein/Damerau/XS.pm';
 my $repo = 'https://github.com/ugexe/Text--Levenshtein--Damerau--XS';
-my $bugs = 'https://rt.cpan.org/Public/Dist/Display.html?Name=Text-Levenshtein-Damerau-XS';
+my $bugs = 'https://github.com/ugexe/Text--Levenshtein--Damerau--XS/issues';
 
 WriteMakefile ( 
-    NAME => 'Text::Levenshtein::Damerau::XS',
-    VERSION_FROM => $pm,
-    ABSTRACT_FROM => $pm,
-    AUTHOR => 'Nick Logan <ugexe@cpan.org>',
-    LICENSE => 'perl',
-    MIN_PERL_VERSION => '5.008008',
-    PREREQ_PM => {
+    NAME                => 'Text::Levenshtein::Damerau::XS',
+    VERSION_FROM        => $pm,
+    ABSTRACT_FROM       => $pm,
+    AUTHOR              => 'Nick Logan <ugexe@cpan.org>',
+    LICENSE             => 'perl',
+    MIN_PERL_VERSION    => '5.008',
+    PREREQ_PM           => {
     },
-    META_MERGE => {
+    CONFIGURE_REQUIRES  => {
+        'ExtUtils::MakeMaker' => 6.64, # For TEST_REQUIRES
+    },
+    TEST_REQUIRES       => {
+        'Test::More' => 0.98_01,
+    },    
+    META_MERGE          => {
         resources => {
             repository => $repo,
             bugtracker => "$bugs",
         },
-        provides => {
+        provides  => {
             'Text::Levenshtein::Damerau::XS' => {
                 file    => 'lib/Text/Levenshtein/Damerau/XS.pm',
-                version => '3.0',
+                # version => '3.00_01',
             },
         },
     },
-    depend => { '$(FIRST_MAKEFILE)' => '$(VERSION_FROM)' },
+    depend              => { '$(FIRST_MAKEFILE)' => '$(VERSION_FROM)' }, # XS make cleanup
 );
 
 
 
 # Remove the Makefile dependency. Causes problems on a few systems.
 sub MY::makefile { '' }
+
+
+
+1;
+
+
+
+__END__

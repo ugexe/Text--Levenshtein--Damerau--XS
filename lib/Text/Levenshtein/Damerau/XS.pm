@@ -4,7 +4,7 @@ use 5.008_008;
 
 require Exporter;
  
-$Text::Levenshtein::Damerau::XS::VERSION = '3.0';
+$Text::Levenshtein::Damerau::XS::VERSION = '3.00_01';
 @Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance/;
 @Text::Levenshtein::Damerau::XS::ISA = qw/Exporter/;
 
@@ -36,30 +36,30 @@ Text::Levenshtein::Damerau::XS - XS Damerau Levenshtein edit distance.
 
 =head1 SYNOPSIS
 
-	use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+    use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
 
-	print xs_edistance('Neil','Niel');
-	# prints 1
+    print xs_edistance('Neil','Niel');
+    # prints 1
 
 =head1 DESCRIPTION
 
 Returns the true Damerau Levenshtein edit distance of strings with adjacent transpositions. XS implementation (requires a C compiler). Works correctly with utf8.
 
-	use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
-	use utf8;
+    use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+    use utf8;
 
-	xs_edistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
-	# prints 1
+    xs_edistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
+    # prints 1
 
 Speed improvements over L<Text::Levenshtein::Damerau::PP>:
 
-	# Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
-	timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
-		 380.46 CPU) @ 2628.40/s (n=1000000)
+    # Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
+    timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
+         380.46 CPU) @ 2628.40/s (n=1000000)
 
-	# Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
-	timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
-		 19.43 CPU) @ 51466.80/s (n=1000000)
+    # Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
+    timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
+         19.43 CPU) @ 51466.80/s (n=1000000)
 
 =head1 METHODS
 
@@ -77,13 +77,13 @@ Returns: int that represents the edit distance between the two argument. Stops c
 
 Wrapper function to take the edit distance between a source and target string using XS algorithm implementation.
 
-	use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
-	print xs_edistance('Neil','Niel');
-	# prints 1
+    use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+    print xs_edistance('Neil','Niel');
+    # prints 1
 
-       # Max edit distance of 1
-	print xs_edistance('Neil','Niely',1); # distance is 2
-	# prints -1
+    # Set a max edit distance of 1
+    print xs_edistance('Neil','Niely',1); # distance is 2
+    # prints -1
 
 =head1 TODO
 
@@ -111,7 +111,7 @@ Wrapper function to take the edit distance between a source and target string us
 
 Please report bugs to:
 
-L<https://rt.cpan.org/Public/Dist/Display.html?Name=Text-Levenshtein-Damerau-XS>
+L<https://github.com/ugexe/Text--Levenshtein--Damerau--XS/issues>
 
 =head1 AUTHOR
 
