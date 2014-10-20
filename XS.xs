@@ -36,7 +36,7 @@ PPCODE:
     if(lenSource == 0 || lenTarget == 0) {
         if( md != 0 && MAX(lenSource, lenTarget) > md ) {
             // XPUSHs(sv_2mortal(&PL_sv_undef));
-            XPUSHs(sv_2mortal(newSViv(-1)));
+            XPUSHs(sv_2mortal(newSVuv(100)));
             XSRETURN(1);
         }
         else {
@@ -47,7 +47,7 @@ PPCODE:
 
     if (md != 0 && diff > mdx) {
         // XPUSHs(sv_2mortal(&PL_sv_undef));
-        XPUSHs(sv_2mortal(newSViv(-1)));
+        XPUSHs(sv_2mortal(newSVuv(100)));
         XSRETURN(1);
     }
 
@@ -59,12 +59,12 @@ PPCODE:
     for (i=0; i < MAX(lenSource,lenTarget); i++) {
         if(i < lenSource) {
             elem = sv_2mortal(av_shift(arraySource));
-            arrSource[ i ] = (int)SvUV((SV *)elem);
+            arrSource[ i ] = (unsigned int)SvUV((SV *)elem);
         }
 
         if(i < lenTarget) {
             elem = sv_2mortal(av_shift(arrayTarget));
-            arrTarget[ i ] = (int)SvUV((SV *)elem);
+            arrTarget[ i ] = (unsigned int)SvUV((SV *)elem);
         }
     }
 
