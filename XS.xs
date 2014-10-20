@@ -6,67 +6,70 @@
 
 #include "damerau-int.c"
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
-
-/* use the system malloc and free */
-#undef malloc
-#undef free
 
 MODULE = Text::Levenshtein::Damerau::XS    PACKAGE = Text::Levenshtein::Damerau::XS
 
 PROTOTYPES: ENABLE
 
-int
+void *
 cxs_edistance (arraySource, arrayTarget, maxDistance)
   AV *    arraySource
   AV *    arrayTarget
   SV *    maxDistance
-CODE:
-  unsigned int i;
-  unsigned int lenSource = av_len(arraySource)+1;
-  unsigned int lenTarget = av_len(arrayTarget)+1;
-  int retval;
- 
-  if(lenSource > 0 && lenTarget > 0) {
-    int matchBool;
-    unsigned int srctgt_max = MAX(lenSource,lenTarget);
-    if(lenSource != lenTarget)
-      matchBool = 0;
-    else matchBool = 1;
-
-    {
-    /* Convert Perl array to C array */
-    unsigned int * arrTarget = malloc(sizeof(int) * lenTarget );
-    unsigned int * arrSource = malloc(sizeof(int) * lenSource );
-
-    for (i=0; i < srctgt_max; i++) {
-      if(i < lenSource) {
-          SV* elem = sv_2mortal(av_shift(arraySource));
-          arrSource[ i ] = (int)SvIV((SV *)elem);
-      }
-      if(i < lenTarget) {
-          SV* elem2 = sv_2mortal(av_shift(arrayTarget));
-          arrTarget[ i ] = (int)SvIV((SV *)elem2);
-  
-          /* checks for match */
-          if(matchBool && i < lenSource)
-            if(arrSource[i] != arrTarget[i])
-              matchBool = 0;
-      }
+INIT:
+    unsigned int i, *arrSource, *arrTarget;
+    unsigned int lenSource = av_len(arraySource)+1;
+    unsigned int lenTarget = av_len(arrayTarget)+1;
+    /* hold the user supplied argument for max distance */
+    unsigned int md = SvUV(maxDistance);
+    /* mdx contains a calculated max different (md) to use in the algorithm itself */
+    unsigned int mdx = (md == 0) ? MAX(lenSource,lenTarget) : md;
+    unsigned int diff = MAX(lenSource , lenTarget) - MIN(lenSource, lenTarget);
+    unsigned int undef = 0;
+    SV* elem;
+PPCODE:
+{
+    /* bail out before memory allocation and calculations if possible */
+    if(lenSource == 0 || lenTarget == 0) {
+        if( md != 0 && MAX(lenSource, lenTarget) > md ) {
+            // XPUSHs(sv_2mortal(&PL_sv_undef));
+            XPUSHs(sv_2mortal(newSViv(-1)));
+            XSRETURN(1);
+        }
+        else {
+            XPUSHs(sv_2mortal(newSVuv( MAX(lenSource, lenTarget) )));
+            XSRETURN(1);
+        }
     }
 
-    if(matchBool == 1)
-      RETVAL = 0;
-    else  
-      RETVAL = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
+    if (md != 0 && diff > mdx) {
+        // XPUSHs(sv_2mortal(&PL_sv_undef));
+        XPUSHs(sv_2mortal(newSViv(-1)));
+        XSRETURN(1);
+    }
+
+
+    /* Convert Perl array to C array */
+    Newx(arrTarget, lenTarget, unsigned int);
+    Newx(arrSource, lenSource, unsigned int);
+
+    for (i=0; i < MAX(lenSource,lenTarget); i++) {
+        if(i < lenSource) {
+            elem = sv_2mortal(av_shift(arraySource));
+            arrSource[ i ] = (int)SvUV((SV *)elem);
+        }
+
+        if(i < lenTarget) {
+            elem = sv_2mortal(av_shift(arrayTarget));
+            arrTarget[ i ] = (int)SvUV((SV *)elem);
+        }
+    }
+
+    /* move distance function into this XS file */
+    XPUSHs( newSViv(distance(arrSource,arrTarget,lenSource,lenTarget,md)) );
 
     free(arrSource);
     free(arrTarget);
-    }
-  }
-  else {
-    /* handle a blank string */
-    RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
-  }
-OUTPUT:
-  RETVAL
+}
