@@ -247,6 +247,10 @@ x_Dist_Zilla:
       name: '@TestingMania/Test::MinimumVersion'
       version: '2.000005'
     -
+      class: Dist::Zilla::Plugin::Test::Synopsis
+      name: '@TestingMania/Test::Synopsis'
+      version: '2.000005'
+    -
       class: Dist::Zilla::Plugin::Test::Version
       name: '@TestingMania/Test::Version'
       version: '0.002004'
@@ -268,33 +272,13 @@ x_Dist_Zilla:
       name: '@TestingMania/Test::Compile'
       version: '2.048'
     -
-      class: Dist::Zilla::Plugin::Test::Synopsis
-      name: '@TestingMania/Test::Synopsis'
-      version: '2.000005'
-    -
-      class: Dist::Zilla::Plugin::PodSyntaxTests
-      name: '@TestingMania/PodSyntaxTests'
-      version: '5.020'
-    -
-      class: Dist::Zilla::Plugin::PodCoverageTests
-      name: '@TestingMania/PodCoverageTests'
-      version: '5.020'
-    -
-      class: Dist::Zilla::Plugin::Test::Portability
-      name: '@TestingMania/Test::Portability'
-      version: '2.000005'
-    -
-      class: Dist::Zilla::Plugin::MojibakeTests
-      name: '@TestingMania/MojibakeTests'
-      version: '0.7'
-    -
       class: Dist::Zilla::Plugin::Test::UnusedVars
       name: '@TestingMania/Test::UnusedVars'
       version: '2.000006'
     -
-      class: Dist::Zilla::Plugin::Test::CPAN::Meta::JSON
-      name: '@TestingMania/Test::CPAN::Meta::JSON'
-      version: '0.003'
+      class: Dist::Zilla::Plugin::PodSyntaxTests
+      name: '@TestingMania/PodSyntaxTests'
+      version: '5.020'
     -
       class: Dist::Zilla::Plugin::Test::CPAN::Changes
       name: '@TestingMania/Test::CPAN::Changes'
@@ -310,6 +294,22 @@ x_Dist_Zilla:
             - ':TestFiles'
       name: '@TestingMania/Test::NoTabs'
       version: '0.09'
+    -
+      class: Dist::Zilla::Plugin::MojibakeTests
+      name: '@TestingMania/MojibakeTests'
+      version: '0.7'
+    -
+      class: Dist::Zilla::Plugin::PodCoverageTests
+      name: '@TestingMania/PodCoverageTests'
+      version: '5.020'
+    -
+      class: Dist::Zilla::Plugin::Test::CPAN::Meta::JSON
+      name: '@TestingMania/Test::CPAN::Meta::JSON'
+      version: '0.003'
+    -
+      class: Dist::Zilla::Plugin::Test::Portability
+      name: '@TestingMania/Test::Portability'
+      version: '2.000005'
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       config:

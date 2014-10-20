@@ -46,7 +46,7 @@ PPCODE:
 
     if (md != 0 && diff > mdx) {
         // XPUSHs(sv_2mortal(&PL_sv_undef));
-        XPUSHs(sv_2mortal(newSVuv(&PL_sv_undef)));
+        XPUSHs(sv_2mortal(&PL_sv_undef));
         XSRETURN(1);
     }
 
