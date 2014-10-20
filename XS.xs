@@ -31,11 +31,12 @@ INIT:
     SV* elem;
 PPCODE:
 {
+    warn("lenSource:%d lenTarget:%d", lenSource, lenTarget);
     /* bail out before memory allocation and calculations if possible */
     if(lenSource == 0 || lenTarget == 0) {
         if( md != 0 && MAX(lenSource, lenTarget) > md ) {
             // XPUSHs(sv_2mortal(&PL_sv_undef));
-            XPUSHs(sv_2mortal(newSViv(-1)));
+            XPUSHs(sv_2mortal(newSVuv(100)));
             XSRETURN(1);
         }
         else {
@@ -46,7 +47,7 @@ PPCODE:
 
     if (md != 0 && diff > mdx) {
         // XPUSHs(sv_2mortal(&PL_sv_undef));
-        XPUSHs(sv_2mortal(newSViv(-1)));
+        XPUSHs(sv_2mortal(newSVuv(100)));
         XSRETURN(1);
     }
 
@@ -58,18 +59,22 @@ PPCODE:
     for (i=0; i < MAX(lenSource,lenTarget); i++) {
         if(i < lenSource) {
             elem = sv_2mortal(av_shift(arraySource));
-            arrSource[ i ] = (int)SvUV((SV *)elem);
+            warn("elem1:%d",elem);
+            arrSource[ i ] = (unsigned int)SvUV((SV *)elem);
         }
 
         if(i < lenTarget) {
             elem = sv_2mortal(av_shift(arrayTarget));
-            arrTarget[ i ] = (int)SvUV((SV *)elem);
+            warn("elem2:%d",elem);
+            arrTarget[ i ] = (unsigned int)SvUV((SV *)elem);
         }
     }
 
     /* move distance function into this XS file */
-    XPUSHs( newSViv(distance(arrSource,arrTarget,lenSource,lenTarget,md)) );
+    int distancex = distance(arrSource,arrTarget,lenSource,lenTarget,mdx);
+    warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
+    XPUSHs( newSViv(distancex) );
 
-    free(arrSource);
-    free(arrTarget);
+    Safefree(arrSource);
+    Safefree(arrTarget);
 }
