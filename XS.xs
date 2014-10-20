@@ -4,7 +4,7 @@
 #include "perl.h"
 #include "XSUB.h"
 
-#include "damerau-int.c"
+#include "src/damerau-int.c"
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))

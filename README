@@ -1,75 +1,96 @@
 NAME
-    Text::Levenshtein::Damerau::XS - XS Damerau Levenshtein edit distance.
+
+    Text::Levenshtein::Damerau::XS - Calculate edit distance based on
+    insertion, deletion, substitution, and transposition
+
+VERSION
+
+    version 0.470
 
 SYNOPSIS
-            use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
 
-            print xs_edistance('Neil','Niel');
-            # prints 1
+        use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+    
+        print xs_edistance('Neil','Niel');
+        # prints 1
 
 DESCRIPTION
+
     Returns the true Damerau Levenshtein edit distance of strings with
     adjacent transpositions. XS implementation (requires a C compiler).
     Works correctly with utf8.
 
-            use utf8;
-            xs_edistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
-            # prints 1
+        use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+        use utf8;
+    
+        xs_edistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
+        # prints 1
 
     Speed improvements over Text::Levenshtein::Damerau::PP:
 
-            # Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
-            timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
-                     380.46 CPU) @ 2628.40/s (n=1000000)
-
-            # Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
-            timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
-                     19.43 CPU) @ 51466.80/s (n=1000000)
+        # Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
+        timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
+             380.46 CPU) @ 2628.40/s (n=1000000)
+    
+        # Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
+        timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
+             19.43 CPU) @ 51466.80/s (n=1000000)
 
 METHODS
-  xs_edistance
-    Arguments: source string and target string.
 
-    *   *OPTIONAL 3rd argument* int (max distance; only return results with
-        $int distance or less). 0 = unlimited. Default = 0.
+ xs_edistance
 
-    Returns: int that represents the edit distance between the two argument.
-    Stops calculations and returns -1 if max distance is set and reached.
+    Arguments: $source_text, $target_text, (optional) $max_distance
+
+    Return value: Int $edit_distance || undef (if max_distance is exceeded)
+
+    Returns: int that represents the edit distance between the two
+    argument, or undef if $max_distance threshold is exceeded.
 
     Wrapper function to take the edit distance between a source and target
     string using XS algorithm implementation.
 
-            use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
-            print xs_edistance('Neil','Niel');
-            # prints 1
-
-           # Max edit distance of 1
-            print xs_edistance('Neil','Niely',1); # distance is 2
-            # prints -1
+        use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+        print xs_edistance('Neil','Niel');
+        # prints 1
+    
+        # Set a max edit distance of 1
+        print xs_edistance('Neil','Niely',1); # distance is 2
+        # prints -1
 
 TODO
-    *   Handle very large strings of text. Can be accomplished by reworking
-        the scoring matrix or writing to disk.
 
-    *   Add from_file methods.
+      * Handle very large strings of text. Can be accomplished by reworking
+      the scoring matrix or writing to disk.
 
-    *   Add binary/byte string support.
+      * Add from_file methods.
+
+      * Add binary/byte string support.
 
 SEE ALSO
-    *   Text::Levenshtein::Damerau
 
-    *   Text::Levenshtein::Damerau::PP
+      * Text::Levenshtein::Damerau
+
+      * Text::Levenshtein::Damerau::PP
+
+REPOSITORY
+
+    https://github.com/ugexe/Text--Levenshtein--Damerau--XS
 
 BUGS
+
     Please report bugs to:
 
-    <https://rt.cpan.org/Public/Dist/Display.html?Name=Text-Levenshtein-Dame
-    rau-XS>
+    https://github.com/ugexe/Text--Levenshtein--Damerau--XS/issues
 
 AUTHOR
-    Nick Logan <ug@skunkds.com>
 
-LICENSE AND COPYRIGHT
-    This library is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself.
+    ugexe <ugexe@cpan.org>
+
+COPYRIGHT AND LICENSE
+
+    This software is copyright (c) 2014 by Nick Logan.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
 
