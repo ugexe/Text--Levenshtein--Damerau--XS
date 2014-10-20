@@ -68,9 +68,7 @@ PPCODE:
     }
 
     // warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
-    {
-        XPUSHs( sv_2mortal(newSVuv(distance(arrSource,arrTarget,lenSource,lenTarget,mdx))) );
-    }
+    XPUSHs( sv_2mortal(newSVuv(distance(arrSource,arrTarget,lenSource,lenTarget,mdx))) );
 
     Safefree(arrSource);
     Safefree(arrTarget);

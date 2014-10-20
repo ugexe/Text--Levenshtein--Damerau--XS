@@ -20,6 +20,7 @@ subtest 'with no max distance' => sub {
 
 subtest 'distance using a max distance' => sub {
     is( xs_edistance('xxx','x',1),     -1,  '> max distance setting');
+    is( xs_edistance('xxx','xx',1),    -1,  '> max distance setting');
     is( xs_edistance('xxx','xx',1),     1,  '<= max distance setting');
     is( xs_edistance("xxx","xxxx",1),   1,  'misc 1');
     is( xs_edistance("xxx","xxxx",2),   1,  'misc 2');
