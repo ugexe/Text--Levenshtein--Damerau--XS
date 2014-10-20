@@ -110,20 +110,7 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
                 scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
             }
 
-            /*
-            warn("i:%d j:%d mdx:%d maxDistance:%d y:%d",i,j,mdx,maxDistance,y);
-            if( i == j ) {
-                if(mdx < scores[(i+1) * (y + 2) + (j + 1)]) {
-                    dict_free(head);
-                    free(scores);
-                    return -20;
-                }
-            }
-            else if( j >= x && j > i && mdx < (scores[(i+1) * (y + 2) + (j + 1)] + (MAX(diff,j) - MIN(diff,j) - 1)) ) {
-                // we can look at the length difference along with the current distance to determine a minimum distance
-                return -30;
-            }
-            */
+
 
         }
 
