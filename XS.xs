@@ -33,12 +33,18 @@ PPCODE:
 {
     /* bail out before memory allocation and calculations if possible */
     if(lenSource == 0 || lenTarget == 0) {
+              warn('fart2');
+
         if( md != 0 && MAX(lenSource, lenTarget) > md ) {
+        warn('fart3');
+
             // XPUSHs(sv_2mortal(&PL_sv_undef));
             XPUSHs(sv_2mortal(newSViv(-1)));
             XSRETURN(1);
         }
         else {
+                  warn('fart4');
+
             XPUSHs(sv_2mortal(newSVuv( MAX(lenSource, lenTarget) )));
             XSRETURN(1);
         }
@@ -46,6 +52,7 @@ PPCODE:
 
     if (md != 0 && diff > mdx) {
         // XPUSHs(sv_2mortal(&PL_sv_undef));
+        warn('fart1');
         XPUSHs(sv_2mortal(newSViv(-1)));
         XSRETURN(1);
     }
@@ -70,6 +77,6 @@ PPCODE:
     /* move distance function into this XS file */
     XPUSHs( newSViv(distance(arrSource,arrTarget,lenSource,lenTarget,md)) );
 
-    free(arrSource);
-    free(arrTarget);
+    Safefree(arrSource);
+    Safefree(arrTarget);
 }
