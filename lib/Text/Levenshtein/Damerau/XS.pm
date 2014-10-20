@@ -9,7 +9,7 @@ use strict;
 use warnings FATAL => 'all';
 require Exporter;
 require XSLoader;
-XSLoader::load('Text::Levenshtein::Damerau::XS', $Text::Levenshtein::XS::VERSION);
+XSLoader::load('Text::Levenshtein::Damerau::XS', $Text::Levenshtein::Damerau::XS::VERSION);
 
 @Text::Levenshtein::Damerau::XS::EXPORT_OK  = qw/xs_edistance/;
 @Text::Levenshtein::Damerau::XS::ISA        = qw/Exporter/;
