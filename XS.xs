@@ -59,11 +59,13 @@ PPCODE:
     for (i=0; i < MAX(lenSource,lenTarget); i++) {
         if(i < lenSource) {
             elem = sv_2mortal(av_shift(arraySource));
+            warn("elem1:%d",elem);
             arrSource[ i ] = (unsigned int)SvUV((SV *)elem);
         }
 
         if(i < lenTarget) {
             elem = sv_2mortal(av_shift(arrayTarget));
+            warn("elem2:%d",elem);
             arrTarget[ i ] = (unsigned int)SvUV((SV *)elem);
         }
     }
