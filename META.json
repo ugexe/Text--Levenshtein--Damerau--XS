@@ -345,9 +345,24 @@
             "version" : "2.001002"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Test::Synopsis",
+            "name" : "@TestingMania/Test::Synopsis",
+            "version" : "2.000005"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Test::Version",
             "name" : "@TestingMania/Test::Version",
             "version" : "0.002004"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
+            "name" : "@TestingMania/Test::MinimumVersion",
+            "version" : "2.000005"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::PodCoverageTests",
+            "name" : "@TestingMania/PodCoverageTests",
+            "version" : "5.020"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Portability",
@@ -355,9 +370,9 @@
             "version" : "2.000005"
          },
          {
-            "class" : "Dist::Zilla::Plugin::PodCoverageTests",
-            "name" : "@TestingMania/PodCoverageTests",
-            "version" : "5.020"
+            "class" : "Dist::Zilla::Plugin::Test::CPAN::Meta::JSON",
+            "name" : "@TestingMania/Test::CPAN::Meta::JSON",
+            "version" : "0.003"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
@@ -380,16 +395,6 @@
             },
             "name" : "@TestingMania/Test::Compile",
             "version" : "2.048"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::CPAN::Meta::JSON",
-            "name" : "@TestingMania/Test::CPAN::Meta::JSON",
-            "version" : "0.003"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::UnusedVars",
-            "name" : "@TestingMania/Test::UnusedVars",
-            "version" : "2.000006"
          },
          {
             "class" : "Dist::Zilla::Plugin::PodSyntaxTests",
@@ -417,19 +422,14 @@
             "version" : "0.09"
          },
          {
+            "class" : "Dist::Zilla::Plugin::Test::UnusedVars",
+            "name" : "@TestingMania/Test::UnusedVars",
+            "version" : "2.000006"
+         },
+         {
             "class" : "Dist::Zilla::Plugin::Test::CPAN::Changes",
             "name" : "@TestingMania/Test::CPAN::Changes",
             "version" : "0.008"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::Synopsis",
-            "name" : "@TestingMania/Test::Synopsis",
-            "version" : "2.000005"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
-            "name" : "@TestingMania/Test::MinimumVersion",
-            "version" : "2.000005"
          },
          {
             "class" : "Dist::Zilla::Plugin::RunExtraTests",

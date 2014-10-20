@@ -67,7 +67,7 @@ static void dict_free(item* head){
  
 /* All calculations/work are done here */
 
-static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
+static unsigned int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
   item *head = NULL;
   unsigned int swapCount,swapScore,targetCharCount,i,j;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
@@ -130,6 +130,6 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   unsigned int score = scores[(x+1) * (y + 2) + (y + 1)];
   dict_free(head);
   free(scores);
-  return (maxDistance != 0 && maxDistance < score)?(-1):score;
+  return (maxDistance != 0 && maxDistance < score)?(0):score;
   }
 }
