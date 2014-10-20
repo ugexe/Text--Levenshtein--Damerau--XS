@@ -59,20 +59,18 @@ PPCODE:
     for (i=0; i < MAX(lenSource,lenTarget); i++) {
         if(i < lenSource) {
             elem = sv_2mortal(av_shift(arraySource));
-            warn("elem1:%d",elem);
             arrSource[ i ] = (unsigned int)SvUV((SV *)elem);
         }
 
         if(i < lenTarget) {
             elem = sv_2mortal(av_shift(arrayTarget));
-            warn("elem2:%d",elem);
             arrTarget[ i ] = (unsigned int)SvUV((SV *)elem);
         }
     }
 
     /* move distance function into this XS file */
     int distancex = distance(arrSource,arrTarget,lenSource,lenTarget,mdx);
-    warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
+    // warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
     XPUSHs( newSViv(distancex) );
 
     Safefree(arrSource);
