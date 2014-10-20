@@ -35,7 +35,7 @@ PPCODE:
     if(lenSource == 0 || lenTarget == 0) {
         if( md != 0 && MAX(lenSource, lenTarget) > md ) {
             // XPUSHs(sv_2mortal(&PL_sv_undef));
-            XPUSHs(sv_2mortal(newSVuv(100)));
+            XPUSHs(sv_2mortal(&PL_sv_undef));
             XSRETURN(1);
         }
         else {
@@ -46,7 +46,7 @@ PPCODE:
 
     if (md != 0 && diff > mdx) {
         // XPUSHs(sv_2mortal(&PL_sv_undef));
-        XPUSHs(sv_2mortal(newSVuv(100)));
+        XPUSHs(sv_2mortal(newSVuv(&PL_sv_undef)));
         XSRETURN(1);
     }
 
@@ -67,10 +67,8 @@ PPCODE:
         }
     }
 
-    /* move distance function into this XS file */
-    int distancex = distance(arrSource,arrTarget,lenSource,lenTarget,mdx);
     // warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
-    XPUSHs( newSViv(distancex) );
+    XPUSHs( distance(arrSource,arrTarget,lenSource,lenTarget,mdx) );
 
     Safefree(arrSource);
     Safefree(arrTarget);

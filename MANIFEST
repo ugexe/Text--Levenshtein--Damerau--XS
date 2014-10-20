@@ -23,7 +23,6 @@ xt/author/no-tabs.t
 xt/author/test-eol.t
 xt/cxs_edistance.t
 xt/cxs_edistance2.t
-xt/pod.t
 xt/release/cpan-changes.t
 xt/release/meta-json.t
 xt/release/minimum-version.t
