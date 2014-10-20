@@ -69,9 +69,9 @@ PPCODE:
     }
 
     /* move distance function into this XS file */
-    int distance = distance(arrSource,arrTarget,lenSource,lenTarget,md);
-    warn("distance:%d",distance);
-    XPUSHs( newSViv(distance) );
+    int distancex = distance(arrSource,arrTarget,lenSource,lenTarget,md);
+    warn("distancex:%d",distancex);
+    XPUSHs( newSViv(distancex) );
 
     Safefree(arrSource);
     Safefree(arrTarget);
