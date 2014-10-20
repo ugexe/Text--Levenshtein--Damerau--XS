@@ -31,7 +31,6 @@ INIT:
     SV* elem;
 PPCODE:
 {
-    warn("lenSource:%d lenTarget:%d", lenSource, lenTarget);
     /* bail out before memory allocation and calculations if possible */
     if(lenSource == 0 || lenTarget == 0) {
         if( md != 0 && MAX(lenSource, lenTarget) > md ) {
