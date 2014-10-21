@@ -12,7 +12,6 @@ do { my $x = {
                     },
        'runtime' => {
                       'requires' => {
-                                      'Test::CheckDeps' => '0.010',
                                       'perl' => '5.008'
                                     }
                     },

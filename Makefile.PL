@@ -17,9 +17,7 @@ my %WriteMakefileArgs = (
   "EXE_FILES" => [],
   "LICENSE" => "perl",
   "NAME" => "Text::Levenshtein::Damerau::XS",
-  "PREREQ_PM" => {
-    "Test::CheckDeps" => "0.010"
-  },
+  "PREREQ_PM" => {},
   "TEST_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0,
     "File::Spec" => 0,
@@ -39,7 +37,6 @@ my %FallbackPrereqs = (
   "File::Spec" => 0,
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
-  "Test::CheckDeps" => "0.010",
   "Test::More" => "0.88"
 );
 
