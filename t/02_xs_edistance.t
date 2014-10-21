@@ -1,21 +1,21 @@
 #!perl -T
 use 5.008;
 use strict;
-use warnings FATAL => 'all', NONFATAL => 'deprecated';;
+use warnings FATAL => 'all', NONFATAL => 'deprecated';
 use Test::More;
 use Text::Levenshtein::Damerau::XS qw/lddistance xs_edistance/;
 
 subtest 'with no max distance' => sub { 
-    is( lddistance('four','for'),     1,  'insertion');
-    is( lddistance('four','four'),    0,  'matching');
-    is( lddistance('four','fourth'),  2,  'deletion');
-    is( lddistance('four','fuor'),    1,  'transposition');
-    is( lddistance('four','fxxr'),    2,  'substitution');
-    is( lddistance('four','FOuR'),    3,  'case');
-    is( lddistance('four',''),        4,  'target empty');
-    is( lddistance('','four'),        4,  'source empty');
-    is( lddistance('',''),            0,  'source and target empty');
-    is( lddistance('111','11'),       1,  'numbers');
+    is( lddistance('four','for'),       1,  'insertion');
+    is( lddistance('four','four'),      0,  'matching');
+    is( lddistance('four','fourth'),    2,  'deletion');
+    is( lddistance('four','fuor'),      1,  'transposition');
+    is( lddistance('four','fxxr'),      2,  'substitution');
+    is( lddistance('four','FOuR'),      3,  'case');
+    is( lddistance('four',''),          4,  'target empty');
+    is( lddistance('','four'),          4,  'source empty');
+    is( lddistance('',''),              0,  'source and target empty');
+    is( lddistance('111','11'),         1,  'numbers');
 };
 
 subtest 'distance using a max distance' => sub {
@@ -35,16 +35,15 @@ subtest 'distance using a max distance' => sub {
 subtest 'distance using utf8' => sub {
     use utf8;
     binmode STDOUT, ":encoding(utf8)";
-    is( lddistance('ⓕⓞⓤⓡ','ⓕⓞⓤⓡ'),    0,  'matching');
-    is( lddistance('ⓕⓞⓤⓡ','ⓕⓞⓡ'),     1,  'insertion');
-    is( lddistance('ⓕⓞⓤⓡ','ⓕⓞⓤⓡⓣⓗ') , 2,  'deletion');
-    is( lddistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'),    1,  'transposition');
-    is( lddistance('ⓕⓞⓤⓡ','ⓕⓧⓧⓡ'),    2,  'substitution');
-    is( lddistance('ⓕⓞⓤⓡ','ⓕⓧⓧⓡ',10), 2,  'substitution with maxDistance=10');
+    is( lddistance('ⓕⓞⓤⓡ','ⓕⓞⓤⓡ'),      0,  'matching');
+    is( lddistance('ⓕⓞⓤⓡ','ⓕⓞⓡ'),       1,  'insertion');
+    is( lddistance('ⓕⓞⓤⓡ','ⓕⓞⓤⓡⓣⓗ') ,   2,  'deletion');
+    is( lddistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'),      1,  'transposition');
+    is( lddistance('ⓕⓞⓤⓡ','ⓕⓧⓧⓡ'),      2,  'substitution');
+    is( lddistance('ⓕⓞⓤⓡ','ⓕⓧⓧⓡ',10),   2,  'substitution with maxDistance=10');
 };
 
 subtest 'backwards compatability' => sub {
-
     is  ( xs_edistance('fo','four',1),                        -1, '> max distance setting (deprecated xs_edistance)');
     is  ( lddistance('fo','four',1),                       undef, '> max distance setting (lddistance)');
     is  ( lddistance('fo','four'),     xs_edistance('fo','four'), 'lddistance == xs_edistance when $max_distance IS NOT exceeded');    
