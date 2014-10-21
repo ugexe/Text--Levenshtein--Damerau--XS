@@ -44,9 +44,9 @@ subtest 'distance using utf8' => sub {
 };
 
 subtest 'backwards compatability' => sub {
-    is( xs_distance('fo','four',1),    -1,  '> max distance setting (depreciated xs_edistance)');
-    is( lddistance('fo','four',1),  undef,  '> max distance setting (lddistance)');
-    is  ( lddistance('fo','four'),   xs_edistance('fo','four'),   'lddistance == xs_edistance when $max_distance IS NOT exceeded');    
+    is  ( xs_edistance('fo','four',1),                       -1,  '> max distance setting (depreciated xs_edistance)');
+    is  ( lddistance('fo','four',1),                      undef,  '> max distance setting (lddistance)');
+    is  ( lddistance('fo','four'),     xs_edistance('fo','four'),   'lddistance == xs_edistance when $max_distance IS NOT exceeded');    
     isnt( lddistance('fo','four',1), xs_edistance('fo','four',1), 'lddistance != xs_edistance when $max_distance exceeded (undef and -1)');    
 };
 
