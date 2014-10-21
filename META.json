@@ -53,7 +53,7 @@
    "provides" : {
       "Text::Levenshtein::Damerau::XS" : {
          "file" : "lib/Text/Levenshtein/Damerau/XS.pm",
-         "version" : "4.02"
+         "version" : "4.03"
       }
    },
    "release_status" : "testing",
@@ -68,7 +68,7 @@
          "web" : "https://github.com/ugexe/Text--Levenshtein--Damerau--XS"
       }
    },
-   "version" : "4.02",
+   "version" : "4.03",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.020000"
@@ -340,54 +340,9 @@
             "version" : "2.001002"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Test::Version",
-            "name" : "@TestingMania/Test::Version",
-            "version" : "0.002004"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::Portability",
-            "name" : "@TestingMania/Test::Portability",
-            "version" : "2.000005"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::PodSyntaxTests",
-            "name" : "@TestingMania/PodSyntaxTests",
-            "version" : "5.020"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::MojibakeTests",
-            "name" : "@TestingMania/MojibakeTests",
-            "version" : "0.7"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::NoTabs",
-            "config" : {
-               "Dist::Zilla::Plugin::Test::NoTabs" : {
-                  "filename" : "xt/author/no-tabs.t",
-                  "finder" : [
-                     ":InstallModules",
-                     ":ExecFiles",
-                     ":TestFiles"
-                  ]
-               }
-            },
-            "name" : "@TestingMania/Test::NoTabs",
-            "version" : "0.09"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::CPAN::Meta::JSON",
-            "name" : "@TestingMania/Test::CPAN::Meta::JSON",
-            "version" : "0.003"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::PodCoverageTests",
-            "name" : "@TestingMania/PodCoverageTests",
-            "version" : "5.020"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::Test::Synopsis",
-            "name" : "@TestingMania/Test::Synopsis",
-            "version" : "2.000005"
+            "class" : "Dist::Zilla::Plugin::Test::CPAN::Changes",
+            "name" : "@TestingMania/Test::CPAN::Changes",
+            "version" : "0.008"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::Compile",
@@ -412,19 +367,64 @@
             "version" : "2.048"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Test::CPAN::Changes",
-            "name" : "@TestingMania/Test::CPAN::Changes",
-            "version" : "0.008"
+            "class" : "Dist::Zilla::Plugin::PodCoverageTests",
+            "name" : "@TestingMania/PodCoverageTests",
+            "version" : "5.020"
          },
          {
-            "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
-            "name" : "@TestingMania/Test::MinimumVersion",
+            "class" : "Dist::Zilla::Plugin::Test::CPAN::Meta::JSON",
+            "name" : "@TestingMania/Test::CPAN::Meta::JSON",
+            "version" : "0.003"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::PodSyntaxTests",
+            "name" : "@TestingMania/PodSyntaxTests",
+            "version" : "5.020"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::NoTabs",
+            "config" : {
+               "Dist::Zilla::Plugin::Test::NoTabs" : {
+                  "filename" : "xt/author/no-tabs.t",
+                  "finder" : [
+                     ":InstallModules",
+                     ":ExecFiles",
+                     ":TestFiles"
+                  ]
+               }
+            },
+            "name" : "@TestingMania/Test::NoTabs",
+            "version" : "0.09"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::MojibakeTests",
+            "name" : "@TestingMania/MojibakeTests",
+            "version" : "0.7"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::Portability",
+            "name" : "@TestingMania/Test::Portability",
+            "version" : "2.000005"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::Synopsis",
+            "name" : "@TestingMania/Test::Synopsis",
             "version" : "2.000005"
          },
          {
             "class" : "Dist::Zilla::Plugin::Test::UnusedVars",
             "name" : "@TestingMania/Test::UnusedVars",
             "version" : "2.000006"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::Version",
+            "name" : "@TestingMania/Test::Version",
+            "version" : "0.002004"
+         },
+         {
+            "class" : "Dist::Zilla::Plugin::Test::MinimumVersion",
+            "name" : "@TestingMania/Test::MinimumVersion",
+            "version" : "2.000005"
          },
          {
             "class" : "Dist::Zilla::Plugin::RunExtraTests",
@@ -536,7 +536,7 @@
                "Dist::Zilla::Plugin::Git::Tag" : {
                   "branch" : null,
                   "signed" : 0,
-                  "tag" : "v4.02",
+                  "tag" : "v4.03",
                   "tag_format" : "v%v",
                   "tag_message" : "v%v",
                   "time_zone" : "local"
@@ -553,7 +553,6 @@
             "config" : {
                "Dist::Zilla::Plugin::Git::Push" : {
                   "push_to" : [
-                     "origin dev:dev",
                      "origin build/dev:build/dev"
                   ],
                   "remotes_must_exist" : 1
@@ -564,11 +563,6 @@
             },
             "name" : "@Git/Push",
             "version" : "2.025"
-         },
-         {
-            "class" : "Dist::Zilla::Plugin::GitHub::Update",
-            "name" : "GitHub::Update",
-            "version" : "0.38"
          },
          {
             "class" : "Dist::Zilla::Plugin::TestRelease",
