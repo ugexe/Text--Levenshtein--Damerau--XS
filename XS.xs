@@ -46,7 +46,7 @@ PPCODE:
 
     if (md != 0 && diff > mdx) {
         // XPUSHs(sv_2mortal(&PL_sv_undef));
-        XPUSHs(sv_2mortal(newSVuv(&PL_sv_undef)));
+        XPUSHs(sv_2mortal(&PL_sv_undef));
         XSRETURN(1);
     }
 
@@ -68,7 +68,7 @@ PPCODE:
     }
 
     // warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
-    XPUSHs( distance(arrSource,arrTarget,lenSource,lenTarget,mdx) );
+    XPUSHs( sv_2mortal(newSVuv(distance(arrSource,arrTarget,lenSource,lenTarget,mdx))) );
 
     Safefree(arrSource);
     Safefree(arrTarget);

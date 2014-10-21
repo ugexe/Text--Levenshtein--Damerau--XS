@@ -11,12 +11,20 @@ require Exporter;
 require XSLoader;
 XSLoader::load('Text::Levenshtein::Damerau::XS', $Text::Levenshtein::Damerau::XS::VERSION);
 
-@Text::Levenshtein::Damerau::XS::EXPORT_OK  = qw/xs_edistance/;
+@Text::Levenshtein::Damerau::XS::EXPORT_OK  = qw/xs_edistance lddistance/;
 @Text::Levenshtein::Damerau::XS::ISA        = qw/Exporter/;
 
 
 
 sub xs_edistance {
+    my $distance = lddistance(@_);
+    warnings::warnif("deprecated","xs_edistance is depreciated. Please use lddistance which returns undef instead of -1 for distances that exceed the optional \$max_distance");
+    return (defined $distance && $distance >= 0) ? $distance : -1;
+}
+
+
+
+sub lddistance {
     # shift shift shift is faster than $_[0] $_[1] $_[2] 
     return Text::Levenshtein::Damerau::XS::cxs_edistance( [unpack('U*', shift)], [unpack('U*',shift)], shift || 0);
 }
@@ -34,7 +42,7 @@ __END__
 
 # ABSTRACT: Calculate edit distance based on insertion, deletion, substitution, and transposition
 
-=for Pod::Coverage dl_load_flags cxs_edistance
+=for Pod::Coverage dl_load_flags cxs_edistance xs_edistance
 
 =encoding utf8
 

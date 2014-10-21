@@ -37,7 +37,7 @@ Speed improvements over L<Text::Levenshtein::Damerau::PP>:
     timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
          19.43 CPU) @ 51466.80/s (n=1000000)
 
-=for Pod::Coverage dl_load_flags cxs_edistance
+=for Pod::Coverage dl_load_flags cxs_edistance xs_edistance
 
 =head1 METHODS
 
