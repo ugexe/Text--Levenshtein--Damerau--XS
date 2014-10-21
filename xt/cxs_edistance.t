@@ -1,5 +1,7 @@
+#!perl -T
+use 5.008;
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use Test::More tests => 1;
 use Text::Levenshtein::Damerau::XS;
 
@@ -13,6 +15,8 @@ $b[48] = 2;
 $b[49] = 1;
 $b[50] = 1;
 
-warn("\n\nBelow Uninit warnings are intentional\n\n");
-is( Text::Levenshtein::Damerau::XS::cxs_edistance(\@a,\@b,0), 1, 'test csx_edistance NULL bug');
-warn("\n\nAbove Uninit warnings were intentional\n\n");
+{
+    no warnings qw/uninitialized/;
+    is( Text::Levenshtein::Damerau::XS::cxs_edistance(\@a,\@b,0), 1, 'csx_edistance NULL bug');
+    use warnings qw/uninitialized/;
+}

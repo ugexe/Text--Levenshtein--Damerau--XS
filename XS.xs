@@ -67,8 +67,12 @@ PPCODE:
         }
     }
 
-    // warn("distancex:%d lenSource:%d lenTarget:%d mdx:%d",distancex,lenSource,lenTarget,mdx);
-    XPUSHs( sv_2mortal(newSVuv(distance(arrSource,arrTarget,lenSource,lenTarget,mdx))) );
+    /* distance() can't return undef, so has to be 'int' instead of 'unsigned int' 
+    /* which limits its possible return value. I will be changing distance() from 
+    /* C89 to XS so I can more easily return undef without limiting any values.
+    */
+    int edistance = distance(arrSource,arrTarget,lenSource,lenTarget,mdx);
+    XPUSHs(sv_2mortal( (edistance >= 0) ? newSVuv(edistance) : &PL_sv_undef ));
 
     Safefree(arrSource);
     Safefree(arrTarget);
