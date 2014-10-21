@@ -44,6 +44,7 @@ subtest 'distance using utf8' => sub {
 };
 
 subtest 'backwards compatability' => sub {
+    no warnings 'deprecated';
     is  ( xs_edistance('fo','four',1),                        -1, '> max distance setting (deprecated xs_edistance)');
     is  ( lddistance('fo','four',1),                       undef, '> max distance setting (lddistance)');
     is  ( lddistance('fo','four'),     xs_edistance('fo','four'), 'lddistance == xs_edistance when $max_distance IS NOT exceeded');    
