@@ -3,7 +3,7 @@ use 5.008;
 use strict;
 use warnings FATAL => 'all';
 use Test::More;
-use Text::Levenshtein::XS qw/distance/;
+use Text::Levenshtein::Damerau::XS qw/lddistance/;
 
 plan skip_all => "Test::LeakTrace does not work with Devel::Cover" if exists($INC{'Devel/Cover.pm'});
 
