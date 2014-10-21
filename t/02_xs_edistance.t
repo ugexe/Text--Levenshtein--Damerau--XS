@@ -2,7 +2,7 @@
 use 5.008;
 use strict;
 use warnings FATAL => 'all', NONFATAL => 'deprecated';
-use Test::More;
+use Test::More 0.88;
 use Text::Levenshtein::Damerau::XS qw/lddistance xs_edistance/;
 
 subtest 'with no max distance' => sub { 
