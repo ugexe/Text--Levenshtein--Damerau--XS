@@ -12,6 +12,7 @@ do { my $x = {
                     },
        'runtime' => {
                       'requires' => {
+                                      'Test::More' => '0.88',
                                       'perl' => '5.008'
                                     }
                     },
@@ -24,7 +25,7 @@ do { my $x = {
                                    'File::Spec' => '0',
                                    'IO::Handle' => '0',
                                    'IPC::Open3' => '0',
-                                   'Test::More' => '0'
+                                   'Test::More' => '0.88'
                                  }
                  }
      };
