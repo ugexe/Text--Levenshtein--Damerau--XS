@@ -5,7 +5,7 @@ use warnings FATAL => 'all', NONFATAL => 'deprecated';
 use Test::More 0.88;
 use Text::Levenshtein::Damerau::XS qw/lddistance xs_edistance/;
 
-subtest 'with no max distance' => sub { 
+subtest 'with no max distance' => sub {
     is( lddistance('four','for'),       1,  'insertion');
     is( lddistance('four','four'),      0,  'matching');
     is( lddistance('four','fourth'),    2,  'deletion');
@@ -47,8 +47,7 @@ subtest 'backwards compatability' => sub {
     no warnings 'deprecated';
     is  ( xs_edistance('fo','four',1),                        -1, '> max distance setting (deprecated xs_edistance)');
     is  ( lddistance('fo','four',1),                       undef, '> max distance setting (lddistance)');
-    is  ( lddistance('fo','four'),     xs_edistance('fo','four'), 'lddistance == xs_edistance when $max_distance IS NOT exceeded');    
-    isnt( lddistance('fo','four',1), xs_edistance('fo','four',1), 'lddistance != xs_edistance when $max_distance exceeded (undef and -1)');
+    is  ( lddistance('fo','four'),     xs_edistance('fo','four'), 'lddistance == xs_edistance when $max_distance IS NOT exceeded');    isnt( lddistance('fo','four',1), xs_edistance('fo','four',1), 'lddistance != xs_edistance when $max_distance exceeded (undef and -1)');
 };
 
 

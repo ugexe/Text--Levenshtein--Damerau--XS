@@ -25,7 +25,7 @@ sub xs_edistance {
 
 
 sub lddistance {
-    # shift shift shift is faster than $_[0] $_[1] $_[2] 
+    # shift shift shift is faster than $_[0] $_[1] $_[2]
     return Text::Levenshtein::Damerau::XS::cxs_edistance( [unpack('U*', shift)], [unpack('U*',shift)], shift || 0);
 }
 
@@ -60,17 +60,17 @@ Returns the true Damerau Levenshtein edit distance of strings with adjacent tran
     use Text::Levenshtein::Damerau::XS qw/lddistance/;
     use utf8;
 
-    lddistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
+    print lddistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ');
     # prints 1
 
 Speed improvements over L<Text::Levenshtein::Damerau::PP>:
 
     # Text::Levenshtein::Damerau::PP::pp_edistance("four","fuor")
-    timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
+    timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys =
          380.46 CPU) @ 2628.40/s (n=1000000)
 
     # Text::Levenshtein::Damerau::XS::lddistance("four","fuor")
-    timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
+    timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys =
          19.43 CPU) @ 51466.80/s (n=1000000)
 
 =head1 METHODS
