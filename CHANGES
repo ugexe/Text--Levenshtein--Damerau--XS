@@ -1,5 +1,9 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
+4.00 2014-10-20 21:47:54 America/New_York
+    - Major changes: use lddistance instead of xs_edistance and return undef instead of -1 for > $max_distance
+    - Use Dist::Zilla
+
 3.0 2013-06-22 22:29:17 America/New_York
     - maxDistance incorrect results patched with non-optimal solution
     - some XS API changes to try and pass weird OpenBSD failures
