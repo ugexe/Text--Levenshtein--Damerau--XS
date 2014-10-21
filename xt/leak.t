@@ -10,7 +10,7 @@ plan skip_all => "Test::LeakTrace does not work with Devel::Cover" if exists($IN
 eval "use Test::LeakTrace";
 plan skip_all => "Test::LeakTrace required to test for memory leaks" if $@;
 
-no_leaks_ok(sub { distance('xaax' x $_, 'ax' x $_) for 1..1000 }, 'no memory leaks in distance');
+no_leaks_ok(sub { lddistance('xaax' x $_, 'ax' x $_) for 1..1000 }, 'no memory leaks in distance');
 
 
 
