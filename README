@@ -5,13 +5,13 @@ NAME
 
 VERSION
 
-    version 0.40
+    version 3.01
 
 SYNOPSIS
 
-        use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+        use Text::Levenshtein::Damerau::XS qw/lddistance/;
     
-        print xs_edistance('Neil','Niel');
+        print lddistance('Neil','Niel');
         # prints 1
 
 DESCRIPTION
@@ -20,10 +20,10 @@ DESCRIPTION
     adjacent transpositions. XS implementation (requires a C compiler).
     Works correctly with utf8.
 
-        use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
+        use Text::Levenshtein::Damerau::XS qw/lddistance/;
         use utf8;
     
-        xs_edistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
+        lddistance('ⓕⓞⓤⓡ','ⓕⓤⓞⓡ'), 
         # prints 1
 
     Speed improvements over Text::Levenshtein::Damerau::PP:
@@ -32,13 +32,13 @@ DESCRIPTION
         timethis 1000000: 381 wallclock secs (380.45 usr +  0.01 sys = 
              380.46 CPU) @ 2628.40/s (n=1000000)
     
-        # Text::Levenshtein::Damerau::XS::xs_edistance("four","fuor")
+        # Text::Levenshtein::Damerau::XS::lddistance("four","fuor")
         timethis 1000000: 19 wallclock secs (19.43 usr +  0.00 sys = 
              19.43 CPU) @ 51466.80/s (n=1000000)
 
 METHODS
 
- xs_edistance
+ lddistance
 
     Arguments: $source_text, $target_text, (optional) $max_distance
 
@@ -50,12 +50,12 @@ METHODS
     Wrapper function to take the edit distance between a source and target
     string using XS algorithm implementation.
 
-        use Text::Levenshtein::Damerau::XS qw/xs_edistance/;
-        print xs_edistance('Neil','Niel');
+        use Text::Levenshtein::Damerau::XS qw/lddistance/;
+        print lddistance('Neil','Niel');
         # prints 1
     
         # Set a max edit distance of 1
-        print xs_edistance('Neil','Niely',1); # distance is 2
+        print lddistance('Neil','Niely',1); # distance is 2
         # prints -1
 
 TODO

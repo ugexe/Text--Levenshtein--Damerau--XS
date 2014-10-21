@@ -23,7 +23,7 @@ no_index:
 provides:
   Text::Levenshtein::Damerau::XS:
     file: lib/Text/Levenshtein/Damerau/XS.pm
-    version: '0.40'
+    version: '3.01'
 requires:
   Test::CheckDeps: '0.010'
   perl: '5.008'
@@ -31,7 +31,7 @@ resources:
   bugtracker: https://github.com/ugexe/Text--Levenshtein--Damerau--XS/issues
   homepage: https://github.com/ugexe/Text--Levenshtein--Damerau--XS
   repository: https://github.com/ugexe/Text--Levenshtein--Damerau--XS.git
-version: '0.40'
+version: '3.01'
 x_Dist_Zilla:
   perl:
     version: '5.020000'
@@ -58,7 +58,7 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Git::NextVersion
       config:
         Dist::Zilla::Plugin::Git::NextVersion:
-          first_version: '0.40'
+          first_version: '3.01'
           version_by_branch: '0'
           version_regexp: (?^:^v(.+)$)
         Dist::Zilla::Role::Git::Repo:
@@ -157,10 +157,6 @@ x_Dist_Zilla:
       name: PruneCruft
       version: '5.020'
     -
-      class: Dist::Zilla::Plugin::GitFmtChanges
-      name: GitFmtChanges
-      version: '0.005'
-    -
       class: Dist::Zilla::Plugin::ManifestSkip
       name: ManifestSkip
       version: '5.020'
@@ -244,13 +240,13 @@ x_Dist_Zilla:
       name: MetaProvides::Package
       version: '2.001002'
     -
+      class: Dist::Zilla::Plugin::Test::Version
+      name: '@TestingMania/Test::Version'
+      version: '0.002004'
+    -
       class: Dist::Zilla::Plugin::Test::UnusedVars
       name: '@TestingMania/Test::UnusedVars'
       version: '2.000006'
-    -
-      class: Dist::Zilla::Plugin::Test::CPAN::Meta::JSON
-      name: '@TestingMania/Test::CPAN::Meta::JSON'
-      version: '0.003'
     -
       class: Dist::Zilla::Plugin::Test::NoTabs
       config:
@@ -262,6 +258,38 @@ x_Dist_Zilla:
             - ':TestFiles'
       name: '@TestingMania/Test::NoTabs'
       version: '0.09'
+    -
+      class: Dist::Zilla::Plugin::Test::Portability
+      name: '@TestingMania/Test::Portability'
+      version: '2.000005'
+    -
+      class: Dist::Zilla::Plugin::PodCoverageTests
+      name: '@TestingMania/PodCoverageTests'
+      version: '5.020'
+    -
+      class: Dist::Zilla::Plugin::Test::CPAN::Changes
+      name: '@TestingMania/Test::CPAN::Changes'
+      version: '0.008'
+    -
+      class: Dist::Zilla::Plugin::Test::CPAN::Meta::JSON
+      name: '@TestingMania/Test::CPAN::Meta::JSON'
+      version: '0.003'
+    -
+      class: Dist::Zilla::Plugin::PodSyntaxTests
+      name: '@TestingMania/PodSyntaxTests'
+      version: '5.020'
+    -
+      class: Dist::Zilla::Plugin::Test::Synopsis
+      name: '@TestingMania/Test::Synopsis'
+      version: '2.000005'
+    -
+      class: Dist::Zilla::Plugin::MojibakeTests
+      name: '@TestingMania/MojibakeTests'
+      version: '0.7'
+    -
+      class: Dist::Zilla::Plugin::Test::MinimumVersion
+      name: '@TestingMania/Test::MinimumVersion'
+      version: '2.000005'
     -
       class: Dist::Zilla::Plugin::Test::Compile
       config:
@@ -279,38 +307,6 @@ x_Dist_Zilla:
           skips: []
       name: '@TestingMania/Test::Compile'
       version: '2.048'
-    -
-      class: Dist::Zilla::Plugin::Test::CPAN::Changes
-      name: '@TestingMania/Test::CPAN::Changes'
-      version: '0.008'
-    -
-      class: Dist::Zilla::Plugin::Test::Portability
-      name: '@TestingMania/Test::Portability'
-      version: '2.000005'
-    -
-      class: Dist::Zilla::Plugin::PodSyntaxTests
-      name: '@TestingMania/PodSyntaxTests'
-      version: '5.020'
-    -
-      class: Dist::Zilla::Plugin::Test::Synopsis
-      name: '@TestingMania/Test::Synopsis'
-      version: '2.000005'
-    -
-      class: Dist::Zilla::Plugin::Test::Version
-      name: '@TestingMania/Test::Version'
-      version: '0.002004'
-    -
-      class: Dist::Zilla::Plugin::PodCoverageTests
-      name: '@TestingMania/PodCoverageTests'
-      version: '5.020'
-    -
-      class: Dist::Zilla::Plugin::Test::MinimumVersion
-      name: '@TestingMania/Test::MinimumVersion'
-      version: '2.000005'
-    -
-      class: Dist::Zilla::Plugin::MojibakeTests
-      name: '@TestingMania/MojibakeTests'
-      version: '0.7'
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       config:
@@ -396,7 +392,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.40
+          tag: v3.01
           tag_format: v%v
           tag_message: v%v
           time_zone: local
@@ -471,7 +467,7 @@ x_Dist_Zilla:
   zilla:
     class: Dist::Zilla::Dist::Builder
     config:
-      is_trial: '1'
+      is_trial: '0'
     version: '5.020'
 x_authority: cpan:UGEXE
 x_contributors:
