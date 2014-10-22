@@ -23,7 +23,7 @@ before_install:
    - 'if [[ $BUILD == 1 ]]; then export AUTHOR_TESTING=0; fi'
 install:
    - 'if [[ $BUILD == 0 ]]; then cpan-install Dist::Zilla; fi'
-   - "if [[ $BUILD == 0 ]]; then dzil authordeps --missing | grep -vP '[^\\w:]' | xargs -n 5 -P 10 cpan-install $HELPER_ROOT/bin/cpan-install; fi"
+   - "if [[ $BUILD == 0 ]]; then dzil authordeps --missing | grep -vP '[^\\w:]' | xargs -n 5 -P 10 $HELPER_ROOT/bin/cpan-install; fi"
    - "if [[ $BUILD == 0 ]]; then dzil listdeps --author --missing | grep -vP '[^\\w:]' | xargs -n 5 -P 10 $HELPER_ROOT/bin/cpan-install; fi"
    - 'if [[ $BUILD == 1 ]]; then cpan-install --deps; fi'
 script:
