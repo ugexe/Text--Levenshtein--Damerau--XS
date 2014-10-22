@@ -29,6 +29,7 @@ before_install:
    - source perl-travis-helper/init
    - build-perl
    - perl -V
+   - export PATH=$HELPER_ROOT/bin:$PATH
    - 'if [[ $BUILD == 0 ]]; then git config --global user.name "TravisCI"; fi'
    - 'if [[ $BUILD == 0 ]]; then git config --global user.email $HOSTNAME":not-for-mail@travis-ci.org"; fi'
    - 'if [[ $BUILD == 1 ]]; then cd .build/testing; fi'
