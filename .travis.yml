@@ -1,14 +1,31 @@
 language: perl
 perl:
+   - 'blead'
+   - '5.20'
    - '5.18'
+   - '5.16'
+   - '5.14'
+   - '5.12'
+   - '5.10'
+   - '5.8'
 env:
    - BUILD=0
+   - BUILD=1
 matrix:
+   allow_failures:
+      - env: BUILD=0
+        perl: 'blead'
+      - env: BUILD=0
+        perl: '5.8'
+      - env: BUILD=1
+        perl: 'blead'
+      - env: BUILD=1
+        perl: '5.8'
    fast_finish: true
 before_install:
    - 'if [[ $BUILD == 1 && ! -d .build/testing ]]; then unset BUILD; fi'
    - 'if [[ $BUILD == 0 ]]; then export AUTOMATED_TESTING=1 NONINTERACTIVE_TESTING=1 HARNESS_OPTIONS=j10:c HARNESS_TIMER=1; fi'
-   - 'if [[ $BUILD == 0 ]]; then git clone git://github.com/ugexe/helpers; fi'
+   - 'if [[ $BUILD == 0 ]]; then git clone git://github.com/travis-perl/helpers; fi'
    - 'if [[ $BUILD == 0 ]]; then source helpers/init; fi'
    - 'if [[ $BUILD == 0 ]]; then build-perl; fi'
    - 'if [[ $BUILD == 0 ]]; then perl -V; fi'
@@ -16,7 +33,7 @@ before_install:
    - 'if [[ $BUILD == 0 ]]; then git config --global user.email $HOSTNAME":not-for-mail@travis-ci.org"; fi'
    - 'if [[ $BUILD == 1 ]]; then cd .build/testing; fi'
    - 'if [[ $BUILD == 1 ]]; then export AUTOMATED_TESTING=1 NONINTERACTIVE_TESTING=1 HARNESS_OPTIONS=j10:c HARNESS_TIMER=1; fi'
-   - 'if [[ $BUILD == 1 ]]; then git clone git://github.com/ugexe/helpers; fi'
+   - 'if [[ $BUILD == 1 ]]; then git clone git://github.com/travis-perl/helpers; fi'
    - 'if [[ $BUILD == 1 ]]; then source helpers/init; fi'
    - 'if [[ $BUILD == 1 ]]; then build-perl; fi'
    - 'if [[ $BUILD == 1 ]]; then perl -V; fi'
