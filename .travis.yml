@@ -24,7 +24,6 @@ before_install:
 install:
    - 'if [[ $BUILD == 0 ]]; then cpan-install Dist::Zilla; fi'
    - "if [[ $BUILD == 0 ]]; then dzil authordeps --missing | grep -vP '[^\\w:]' | xargs -n 5 -P 10 cpanm --quiet --notest; fi"
-   - "if [[ $BUILD == 0 ]]; then dzil authordeps --missing; fi";
    - "if [[ $BUILD == 0 ]]; then $(dzil listdeps --author --missing | grep -vP '[^\\w:]' | cpan-install); fi"
    - "if [[ $BUILD == 0 ]]; then dzil listdeps --author --missing | cpan-install; fi"
    - 'if [[ $BUILD == 1 ]]; then cpanm --installdeps --verbose  .; fi'
