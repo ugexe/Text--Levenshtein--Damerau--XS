@@ -70,3 +70,20 @@ CODE:
   }
 OUTPUT:
   RETVAL
+
+int
+cxs_edistance_bytes (src, tgt, maxDistance)
+  unsigned char *src
+  unsigned char *tgt
+  unsigned int maxDistance
+CODE:
+  unsigned int lenSource = strlen(src);
+  unsigned int lenTarget = strlen(tgt);
+  if (lenSource > 0 && lenTarget > 0)
+    RETVAL = distance_bytes(src, tgt, lenSource, lenTarget, maxDistance);
+  else if (lenSource > lenTarget)
+    RETVAL = lenSource;
+  else
+    RETVAL = lenTarget;
+OUTPUT:
+  RETVAL
