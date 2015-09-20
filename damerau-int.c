@@ -71,7 +71,12 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   unsigned int swapCount,swapScore,targetCharCount,i,j;
   unsigned int *scores = malloc( (x + 2) * (y + 2) * sizeof(unsigned int) );
   unsigned int score_ceil = x + y;
- 
+  unsigned int curr_score;
+  unsigned int diff = x > y ? (x - y) : (y - x);
+
+  if(maxDistance != 0 && diff > maxDistance)
+    return -1;
+
   /* intialize matrix start values */
   scores[0] = score_ceil;  
   scores[1 * (y + 2) + 0] = score_ceil;
@@ -94,6 +99,7 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
           scores[1 * (y + 2) + (j + 1)] = j;
           scores[0 * (y + 2) + (j + 1)] = score_ceil;
       }
+      curr_score = 0;
 
       targetCharCount = find(head,tgt[j-1])->value;
       swapScore = scores[targetCharCount * (y + 2) + swapCount] + i - targetCharCount - 1 + j - swapCount;
@@ -104,14 +110,15 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
         swapCount = j;
         scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
       }
+
+      curr_score = MIN(curr_score, scores[(i+1) * (y + 2) + (j + 1)]);
     }
 
-
-    //if(maxDistance != 0 && maxDistance < scores[(i+1) * (y + 2) + (y + 1)]) {
-    //  dict_free(head);
-    //  free(scores);
-    //  return -1;
-    //}
+    if(maxDistance != 0 && curr_score > maxDistance) {
+      dict_free(head);
+      free(scores);
+      return -1;
+    }
 
     find(head,src[i-1])->value = i;
   }
