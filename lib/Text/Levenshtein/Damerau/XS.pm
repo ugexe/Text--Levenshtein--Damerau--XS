@@ -5,7 +5,7 @@ use 5.008_008;
 require Exporter;
  
 $Text::Levenshtein::Damerau::XS::VERSION = '3.0';
-@Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance/;
+@Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance xs_edistance_bytes/;
 @Text::Levenshtein::Damerau::XS::ISA = qw/Exporter/;
 
 eval {
@@ -24,6 +24,10 @@ eval {
 sub xs_edistance {
     # shift shift shift is faster than $_[0] $_[1] $_[2] 
     return Text::Levenshtein::Damerau::XS::cxs_edistance( [unpack('U*', shift)], [unpack('U*',shift)], shift || 0);
+}
+
+sub xs_edistance_bytes {
+    return Text::Levenshtein::Damerau::XS::cxs_edistance_bytes(shift, shift, shift || 0);
 }
 
 1;
@@ -85,6 +89,11 @@ Wrapper function to take the edit distance between a source and target string us
 	print xs_edistance('Neil','Niely',1); # distance is 2
 	# prints -1
 
+=head2 xs_edistance_bytes
+
+Same as C<xs_edistance()>, except it works on the strings byte by
+byte.  If you have ASCII strings, for example, this version is faster.
+
 =head1 TODO
 
 =over 4
@@ -92,8 +101,6 @@ Wrapper function to take the edit distance between a source and target string us
 =item * Handle very large strings of text. Can be accomplished by reworking the scoring matrix or writing to disk.
 
 =item * Add from_file methods.
-
-=item * Add binary/byte string support.
 
 =back
 
