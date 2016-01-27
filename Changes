@@ -1,9 +1,13 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
-3.0 Fri Jun 22:29:17
+3.1 Wed Jan 27 13:48:56
+	- Better maxDistance short circuiting
+	- Fix a possible read-past-by-1 loop memory problem pointed out (reported by Karl Williamson)
+
+3.0 Fri Jun 01 22:29:17
 	- maxDistance incorrect results patched with non-optimal solution
-    - some XS API changes to try and pass weird OpenBSD failures
-    
+	- some XS API changes to try and pass weird OpenBSD failures
+
 2.9  Wed May 22 14:39:31 2013
 	- Hacked in fix for maxDistance, needs to be redone optimally 
 

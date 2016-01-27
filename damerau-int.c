@@ -87,15 +87,17 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   /* work loops    */
   /* i = src index */
   /* j = tgt index */
-  for(i=1;i<=x;i++){ 
-    head = uniquePush(head,src[i]);
+  for(i=1;i<=x;i++){
+    if(i < x)
+      head = uniquePush(head,src[i]);
     scores[(i+1) * (y + 2) + 1] = i;
     scores[(i+1) * (y + 2) + 0] = score_ceil;
     swapCount = 0;
 
     for(j=1;j<=y;j++){
       if(i == 1) {
-          head = uniquePush(head,tgt[j]);
+          if(j < y)
+            head = uniquePush(head,tgt[j]);
           scores[1 * (y + 2) + (j + 1)] = j;
           scores[0 * (y + 2) + (j + 1)] = score_ceil;
       }

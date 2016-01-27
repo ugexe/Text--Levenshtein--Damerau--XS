@@ -24,7 +24,7 @@ WriteMakefile (
         provides => {
             'Text::Levenshtein::Damerau::XS' => {
                 file    => 'lib/Text/Levenshtein/Damerau/XS.pm',
-                version => '3.0',
+                version => '3.1',
             },
         },
     },

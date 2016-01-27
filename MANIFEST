@@ -6,11 +6,10 @@ lib/Text/Levenshtein/Damerau/XS.pm
 LICENSE
 Makefile.PL
 MANIFEST			This list of files
-README
+README.pod
 t/00_compile.t
 t/01_imports.t
 t/02_xs_edistance.t
 XS.xs
 xt/cxs_edistance.t
-xt/cxs_edistance2.t
 xt/pod.t
