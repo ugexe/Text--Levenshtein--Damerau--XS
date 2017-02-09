@@ -15,7 +15,7 @@ typedef struct dictionary item;
 
 static __inline item* push(unsigned int key,item* curr){
   item* head;
-  head = malloc(sizeof(item));   
+  head = malloc(sizeof(item));
   head->key = key;
   head->value = 0;
   head->next = curr;
@@ -31,7 +31,7 @@ static __inline item* find(item* head,unsigned int key){
     }
     iterator = iterator->next;
   }
- 
+
   return NULL;
 }
 
@@ -44,8 +44,8 @@ static __inline item* uniquePush(item* head,unsigned int key){
     }
     iterator = iterator->next;
   }
- 
-  return push(key,head); 
+
+  return push(key,head);
 }
 
 static void dict_free(item* head){
@@ -63,7 +63,7 @@ static void dict_free(item* head){
 
 
 
- 
+
 /* All calculations/work are done here */
 
 static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigned int y,unsigned int maxDistance){
@@ -74,11 +74,13 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
   unsigned int curr_score;
   unsigned int diff = x > y ? (x - y) : (y - x);
 
-  if(maxDistance != 0 && diff > maxDistance)
+  if(maxDistance != 0 && diff > maxDistance) {
+    free(scores);
     return -1;
+  }
 
   /* intialize matrix start values */
-  scores[0] = score_ceil;  
+  scores[0] = score_ceil;
   scores[1 * (y + 2) + 0] = score_ceil;
   scores[0 * (y + 2) + 1] = score_ceil;
   scores[1 * (y + 2) + 1] = 0;
@@ -106,9 +108,9 @@ static int distance(unsigned int src[],unsigned int tgt[],unsigned int x,unsigne
       targetCharCount = find(head,tgt[j-1])->value;
       swapScore = scores[targetCharCount * (y + 2) + swapCount] + i - targetCharCount - 1 + j - swapCount;
 
-      if(src[i-1] != tgt[j-1]){      
+      if(src[i-1] != tgt[j-1]){
         scores[(i+1) * (y + 2) + (j + 1)] = MIN(swapScore,(MIN(scores[i * (y + 2) + j], MIN(scores[(i+1) * (y + 2) + j], scores[i * (y + 2) + (j + 1)])) + 1));
-      }else{ 
+      }else{
         swapCount = j;
         scores[(i+1) * (y + 2) + (j + 1)] = MIN(scores[i * (y + 2) + j], swapScore);
       }
