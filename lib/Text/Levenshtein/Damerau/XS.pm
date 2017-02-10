@@ -4,7 +4,7 @@ use 5.008_008;
 
 require Exporter;
  
-$Text::Levenshtein::Damerau::XS::VERSION = '3.1';
+$Text::Levenshtein::Damerau::XS::VERSION = '3.2';
 @Text::Levenshtein::Damerau::XS::EXPORT_OK = qw/xs_edistance/;
 @Text::Levenshtein::Damerau::XS::ISA = qw/Exporter/;
 

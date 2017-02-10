@@ -7,7 +7,7 @@ dll.base
 dll.exp
 pm_to_blib
 MYMETA.*
-/Makefile
+Makefile$
 *.tar
 *.gz
 MANIFEST$

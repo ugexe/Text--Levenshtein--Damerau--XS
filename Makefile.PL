@@ -14,17 +14,21 @@ WriteMakefile (
     AUTHOR => 'Nick Logan <ugexe@cpan.org>',
     LICENSE => 'perl',
     MIN_PERL_VERSION => '5.008008',
-    PREREQ_PM => {
+    BUILD_REQUIRES => {
+        'CPAN::Meta::Requirements' => '2.120920',
+    },
+    TEST_REQUIRES => {
+        'Test::More' => '0',
     },
     META_MERGE => {
         resources => {
             repository => $repo,
-            bugtracker => "$bugs",
+            bugtracker => $bugs,
         },
         provides => {
             'Text::Levenshtein::Damerau::XS' => {
                 file    => 'lib/Text/Levenshtein/Damerau/XS.pm',
-                version => '3.1',
+                version => '3.2',
             },
         },
     },

@@ -1,10 +1,15 @@
 Revision history for Perl module Text::Levenshtein::Damerau::XS
 
-3.1 Wed Jan 27 13:48:56
+3.2 Fri Feb 10 19:32:50 2017
+	- Fix leak when length diff is greater than max (reported and fixed by Gregory Oschwald)
+	- Update CPAN::Meta::Requirements (see: http://ppm4.activestate.com/MSWin32-x86/5.16/1600/U/UG/UGEXE/Text-Levenshtein-Damerau-XS-3.1.d/log-20160129T021639.txt)
+	- Possibly fix PPM build on build machines using C89 to compile (i.e. 5.16 and older)
+
+3.1 Wed Jan 27 13:48:56 2016
 	- Better maxDistance short circuiting
 	- Fix a possible read-past-by-1 loop memory problem pointed out (reported by Karl Williamson)
 
-3.0 Fri Jun 01 22:29:17
+3.0 Fri Jun 01 22:29:17 2015
 	- maxDistance incorrect results patched with non-optimal solution
 	- some XS API changes to try and pass weird OpenBSD failures
 
