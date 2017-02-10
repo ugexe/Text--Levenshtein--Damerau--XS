@@ -21,7 +21,12 @@ cxs_edistance (arraySource, arrayTarget, maxDistance)
   AV *    arraySource
   AV *    arrayTarget
   SV *    maxDistance
-CODE:
+PPCODE:
+  {
+  dXSTARG;
+  PUSHs(TARG);
+  PUTBACK;
+  {
   unsigned int i;
   unsigned int lenSource = av_len(arraySource)+1;
   unsigned int lenTarget = av_len(arrayTarget)+1;
@@ -56,9 +61,9 @@ CODE:
     }
 
     if(matchBool == 1)
-      RETVAL = 0;
+      retval = 0;
     else  
-      RETVAL = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
+      retval = distance(arrSource,arrTarget,lenSource,lenTarget,SvIV(maxDistance));
 
     free(arrSource);
     free(arrTarget);
@@ -66,7 +71,10 @@ CODE:
   }
   else {
     /* handle a blank string */
-    RETVAL = (lenSource>lenTarget)?lenSource:lenTarget;
+    retval = (lenSource>lenTarget)?lenSource:lenTarget;
   }
-OUTPUT:
-  RETVAL
+
+  sv_setiv_mg(TARG, retval);
+  return; /*we did a PUTBACK earlier, do not let xsubpp's PUTBACK run */
+  }
+  }
